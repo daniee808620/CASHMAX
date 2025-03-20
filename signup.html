@@ -8,17 +8,12 @@
         @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
 
         body {
-            background-color: #007bff; /* Blue Background */
-            color: white;
+            background-color: white;
+            color: blue;
             font-family: 'Arimo', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             text-align: center;
-            flex-direction: column;
         }
         .header img {
             width: 150px;
@@ -27,8 +22,8 @@
             margin: 20px auto;
         }
         .menu-btn {
-            background-color: white;
-            color: #007bff;
+            background-color: blue;
+            color: white;
             border: none;
             padding: 10px 20px;
             font-size: 18px;
@@ -44,40 +39,33 @@
             top: 60px;
             left: 20px;
             background: white;
-            color: #007bff;
+            color: blue;
             padding: 10px;
             border-radius: 5px;
         }
         .menu a {
             display: block;
-            color: #007bff;
+            color: blue;
             text-decoration: none;
             padding: 10px;
         }
         .signup-container {
             width: 90%;
             max-width: 400px;
+            margin: 30px auto;
             padding: 20px;
-            background: white; /* White Form */
-            color: black; /* Black Text */
+            background: rgba(0, 0, 255, 0.1);
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: left;
         }
         input, select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ccc;
+            border: 1px solid blue;
             border-radius: 5px;
-            background: white;
-            color: black;
-        }
-        input::placeholder {
-            color: gray;
         }
         .btn {
-            background-color: #007bff;
+            background-color: blue;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -91,18 +79,17 @@
             background-color: green;
             color: white;
             padding: 10px;
-            margin-bottom: 20px;
+            margin: 10px auto;
             width: 80%;
             max-width: 400px;
             border-radius: 5px;
         }
         .buy-coupon {
-            color: #007bff;
+            color: blue;
             text-decoration: none;
             font-size: 14px;
             display: block;
-            margin-top: -5px; /* Adjusted for better alignment */
-            text-align: center;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -129,18 +116,18 @@
             <input type="text" id="phone" placeholder="Phone Number" required>
             <input type="email" id="email" placeholder="Email" required>
             <input type="text" id="referredBy" placeholder="Referred By (Optional)">
-            <input type="password" id="password" placeholder="Password" required>
             <select id="package" required>
                 <option value="">Select Package</option>
                 <option value="Lite">Lite (₦750)</option>
                 <option value="Standard">Standard (₦1500)</option>
                 <option value="Premium">Premium (₦3000)</option>
             </select>
+            <input type="password" id="password" placeholder="Password" required>
             <input type="text" id="coupon" placeholder="Coupon Code" required>
             <a href="buy_coupon.html" class="buy-coupon">Buy Coupon</a>
             <button type="submit" class="btn">Sign Up</button>
         </form>
-        <p style="text-align: center;">Already have an account? <a href="login.html" style="color: white;">Sign in</a></p>
+        <p>Already have an account? <a href="login.html" style="color: blue;">Sign in</a></p>
     </div>
 
     <script>
