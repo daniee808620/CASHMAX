@@ -81,6 +81,8 @@
             max-width: 400px;
             border-radius: 5px;
             font-weight: bold;
+            display: block;
+            text-align: center;
         }
         .success {
             background-color: green;
@@ -138,12 +140,14 @@
             if (!user) {
                 messageBox.textContent = "Invalid username or password.";
                 messageBox.className = "message-box error";  // Show error message in red box
+                messageBox.style.display = "block"; // Ensure the message box is visible
                 return;
             }
 
             // Simulate successful login
             messageBox.textContent = "Login successful! Redirecting to dashboard...";
             messageBox.className = "message-box success";  // Show success message in green box
+            messageBox.style.display = "block"; // Ensure the message box is visible
             setTimeout(() => {
                 window.location.href = "dashboard.html"; // Redirect to dashboard page
             }, 2000);
