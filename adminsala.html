@@ -99,17 +99,35 @@
             border: 3px solid #1565c0;
         }
 
-        .admin-buttons {
+        /* Hamburger Button */
+        .hamburger {
             margin-top: 20px;
+            cursor: pointer;
+            padding: 10px;
+            background: #28a745; /* Green */
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .hamburger:hover {
+            background: #218838;
+        }
+
+        /* Admin Buttons (Hidden Initially) */
+        .admin-buttons {
+            display: none;
+            margin-top: 10px;
         }
 
         .admin-buttons a {
             display: block;
-            background: #28a745; /* Green Color */
+            background: #28a745; /* Green */
             color: white;
             text-decoration: none;
             padding: 10px;
-            margin: 10px auto;
+            margin: 5px auto;
             width: 200px;
             font-weight: bold;
             border-radius: 5px;
@@ -153,8 +171,11 @@
                     <img src="https://i.postimg.cc/MGL5Wd0w/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250319-065546-0000.png" alt="Admin">
                 </div>
 
-                <!-- Admin Buttons Below "Total Users" -->
-                <div class="admin-buttons">
+                <!-- Hamburger Button -->
+                <div class="hamburger" onclick="toggleMenu()">☰ Menu</div>
+
+                <!-- Admin Buttons (Hidden Initially) -->
+                <div class="admin-buttons" id="adminMenu">
                     <a href="add_vendor.html">Add Vendor</a>
                     <a href="add_daily_pay.html">Add Daily Pay</a>
                     <a href="withdrawal_portal.html">Withdrawal Portal</a>
@@ -173,13 +194,22 @@
             var loginContainer = document.getElementById("loginContainer");
             var adminPanel = document.getElementById("adminPanel");
 
-            if (username === "admin808620" && password === "admin808620") {
+            if (username === "admin7071" && password === "admin7071") {
                 console.log("Login successful");
                 loginContainer.style.display = "none";
                 adminPanel.style.display = "block";
             } else {
                 console.log("Login failed");
                 document.getElementById("loginError").style.display = "block";
+            }
+        }
+
+        function toggleMenu() {
+            var menu = document.getElementById("adminMenu");
+            if (menu.style.display === "none" || menu.style.display === "") {
+                menu.style.display = "block";
+            } else {
+                menu.style.display = "none";
             }
         }
 
