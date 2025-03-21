@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Coupon</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Arimo', sans-serif;
+            background: linear-gradient(to bottom, white, #f0f0f0);
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+        }
+
+        .profile {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid gray;
+        }
+
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: auto;
+            margin-top: 60px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background-color: green;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid gray;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+
+        .status-active {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-used {
+            color: red;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="profile.jpg" alt="Admin Profile" class="profile"> <!-- Profile Image -->
+
+    <div class="container">
+        <h2>Generate Coupon</h2>
+        <label>Number of Coupons:</label>
+        <input type="number" id="couponAmount" min="1" required>
+
+        <label>Select Plan:</label>
+        <select id="couponPlan">
+            <option value="">Select Plan</option>
+            <option value="Basic">Basic (₦750)</option>
+            <option value="Standard">Standard (₦1500)</option>
+            <option value="Premium">Premium (₦3000)</option>
+        </select>
+
+        <button class="btn" onclick="generateCoupons()">Generate</button>
+    </div>
+
+    <div class="table-container">
+        <h3>Generated Coupons</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Used By</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="couponTable">
+                <tr>
+                    <td colspan="6">No coupon generated</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function generateCoupons() {
+            let amount = document.getElementById("couponAmount").value;
+            let plan = document.getElementById("couponPlan").value;
+
+            if (!amount || amount <= 0 || !plan) {
+                alert("Please enter a valid amount and select a plan.");
+                return;
+            }
+
+            let prefix = "";
+            if (plan === "Basic") prefix = "75";
+            else if (plan === "Standard") prefix = "15";
+            else if (plan === "Premium") prefix = "30";
+
+            let couponList = JSON.parse(localStorage.getItem("coupons")) || [];
+
+            for (let i = 0; i < amount; i++) {
+                let randomPart = Math.random().toString(36).substr(2, 9).toUpperCase();
+                let code = prefix + randomPart.substring(0, 9);
+                let date = new Date();
+                let formattedDate = date.toISOString().split("T")[0];
+                let formattedTime = date.toLocaleTimeString();
+
+                couponList.push({
+                    code: code,
+                    usedBy: "-",
+                    date: formattedDate,
+                    time: formattedTime,
+                    status: "Active",
+                    plan: plan
+                });
+            }
+
+            localStorage.setItem("coupons", JSON.stringify(couponList));
+            displayCoupons();
+        }
+
+        function deleteCoupon(index) {
+            let couponList = JSON.parse(localStorage.getItem("coupons")) || [];
+            couponList.splice(index, 1);
+            localStorage.setItem("coupons", JSON.stringify(couponList));
+            displayCoupons();
+        }
+
+        function displayCoupons() {
+            let couponList = JSON.parse(localStorage.getItem("coupons")) || [];
+            let table = document.getElementById("couponTable");
+
+            if (couponList.length === 0) {
+                table.innerHTML = '<tr><td colspan="6">No coupon generated</td></tr>';
+                return;
+            }
+
+            table.innerHTML = couponList.map((coupon, index) => `
+                <tr>
+                    <td>${coupon.code}</td>
+                    <td>${coupon.usedBy}</td>
+                    <td>${coupon.date}</td>
+                    <td>${coupon.time}</td>
+                    <td class="${coupon.status === 'Active' ? 'status-active' : 'status-used'}">${coupon.status}</td>
+                    <td><button class="delete-btn" onclick="deleteCoupon(${index})">Delete</button></td>
+                </tr>
+            `).join("");
+        }
+
+        document.addEventListener("DOMContentLoaded", displayCoupons);
+    </script>
+
+</body>
+</html>
