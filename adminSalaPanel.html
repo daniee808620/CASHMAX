@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1565c0; /* Solid blue background */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            width: 320px;
+            margin: 50px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            color: black;
+        }
+
+        .total-users {
+            font-size: 18px;
+            font-weight: bold;
+            background: #1565c0;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .user-count {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1565c0;
+        }
+
+        .rectangular-image {
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .hamburger {
+            cursor: pointer;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .hamburger:hover {
+            background: #218838;
+        }
+
+        .admin-buttons {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .admin-buttons a {
+            display: block;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px auto;
+            width: 200px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .admin-buttons a:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body onload="checkLogin()">
+
+    <div class="container">
+        <h2>Admin Dashboard</h2>
+        <div class="total-users">Total Users 👥</div>
+        <div class="user-count" id="userCount">Loading...</div>
+
+        <img src="https://i.postimg.cc/VLWjC9SN/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250321-225402-0000.png" 
+             alt="Admin Dashboard Image" class="rectangular-image">
+
+        <div class="hamburger" onclick="toggleMenu()">☰ Menu</div>
+
+        <div class="admin-buttons" id="adminMenu">
+            <a href="add_vendor.html">Add Vendor</a>
+            <a href="add_daily_pay.html">Add Daily Pay</a>
+            <a href="withdrawal_portal.html">Withdrawal Portal</a>
+            <a href="airtime_data_portal.html">Airtime & Data Portal</a>
+            <a href="add_sp_post.html">Add SP Post</a>
+            <a href="generate_coupon.html">Generate Coupon</a>
+        </div>
+
+        <button onclick="logout()" style="margin-top: 20px; background: red;">Logout</button>
+    </div>
+
+    <script>
+        function checkLogin() {
+            if (sessionStorage.getItem("isAdminLoggedIn") !== "true") {
+                window.location.href = "adminLogin.html"; // Redirect if not logged in
+            }
+
+            // Simulating user count from localStorage
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            document.getElementById("userCount").innerText = users.length;
+        }
+
+        function toggleMenu() {
+            var menu = document.getElementById("adminMenu");
+            menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
+        }
+
+        function logout() {
+            sessionStorage.removeItem("isAdminLoggedIn"); // Clear login state
+            window.location.href = "adminLogin.html"; // Redirect to login
+        }
+    </script>
+
+</body>
+</html>
