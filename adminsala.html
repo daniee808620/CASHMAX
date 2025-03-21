@@ -9,20 +9,29 @@
 
         body {
             font-family: 'Arimo', sans-serif;
-            background-color: white;
+            background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
             text-align: center;
             margin: 0;
             padding: 0;
         }
 
+        /* Squared Text Image */
+        .header-image {
+            width: 100%;
+            max-width: 250px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+        }
+
         .login-container {
-            background-color: blue;
+            background: #1565c0;
             color: white;
             padding: 30px;
-            width: 300px;
-            margin: 100px auto;
+            width: 320px;
+            margin: 50px auto;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .login-container input {
@@ -31,20 +40,27 @@
             margin: 10px 0;
             border: none;
             border-radius: 5px;
+            text-align: center;
         }
 
         .login-container button {
             background-color: white;
-            color: blue;
+            color: #1565c0;
             border: none;
             padding: 10px 20px;
             cursor: pointer;
             font-weight: bold;
             border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .login-container button:hover {
+            background-color: #0d47a1;
+            color: white;
         }
 
         .menu-btn {
-            background-color: blue;
+            background: #1565c0;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -62,7 +78,7 @@
             top: 60px;
             left: 20px;
             background: white;
-            color: blue;
+            color: #1565c0;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -70,14 +86,14 @@
 
         .menu a {
             display: block;
-            color: blue;
+            color: #1565c0;
             text-decoration: none;
             padding: 10px;
             font-weight: bold;
         }
 
         .admin-container {
-            margin-top: 100px;
+            margin-top: 50px;
             display: none;
         }
 
@@ -93,7 +109,7 @@
             font-size: 18px;
             font-weight: bold;
             color: white;
-            background: blue;
+            background: #1565c0;
             display: inline-block;
             padding: 10px 20px;
             border-radius: 5px;
@@ -101,7 +117,7 @@
         }
 
         .user-count {
-            color: blue;
+            color: #1565c0;
             font-size: 22px;
             font-weight: bold;
         }
@@ -114,11 +130,21 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            border: 3px solid blue;
+            border: 3px solid #1565c0;
+        }
+
+        .error-message {
+            color: yellow;
+            display: none;
+            font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
+
+    <!-- Squared Text Image -->
+    <img src="https://i.postimg.cc/MGL5Wd0w/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250319-065546-0000.png" alt="Admin Panel" class="header-image">
 
     <!-- LOGIN SCREEN -->
     <div class="login-container" id="loginContainer">
@@ -126,10 +152,10 @@
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
         <button onclick="checkLogin()">Login</button>
-        <p id="loginError" style="color: yellow; display: none;">Invalid login credentials!</p>
+        <p id="loginError" class="error-message">Invalid login credentials!</p>
     </div>
 
-    <!-- ADMIN PANEL (HIDDEN BY DEFAULT) -->
+    <!-- ADMIN PANEL -->
     <div id="adminPanel" style="display: none;">
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
         <div class="menu" id="menu">
@@ -138,7 +164,7 @@
             <a href="withdrawal_portal.html">Withdrawal Portal</a>
             <a href="airtime_data_portal.html">Airtime & Data Portal</a>
             <a href="add_sp_post.html">Add SP Post</a>
-            <a href="generate_PayMaxxcoupon.html">Generate Coupon</a>  <!-- Added Generate Coupon -->
+            <a href="generateCoupon.html">Generate Coupon</a>
         </div>
 
         <div class="admin-container">
@@ -150,7 +176,7 @@
                 <div class="user-count" id="userCount">Loading...</div>
 
                 <div class="admin-photo">
-                    <img src="https://i.postimg.cc/MGL5Wd0w/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250319-065546-0000.png" alt="Admin Photo">
+                    <img src="https://i.postimg.cc/MGL5Wd0w/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250319-065546-0000.png" alt="Admin">
                 </div>
             </div>
         </div>
@@ -161,7 +187,7 @@
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
 
-            if (username === "admin6820" && password === "admin6820") {
+            if (username === "admin" && password === "1234") {
                 document.getElementById("loginContainer").style.display = "none";
                 document.getElementById("adminPanel").style.display = "block";
             } else {
