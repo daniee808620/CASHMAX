@@ -15,6 +15,34 @@
             padding: 0;
         }
 
+        .login-container {
+            background-color: blue;
+            color: white;
+            padding: 30px;
+            width: 300px;
+            margin: 100px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-container input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .login-container button {
+            background-color: white;
+            color: blue;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
         .menu-btn {
             background-color: blue;
             color: white;
@@ -50,6 +78,7 @@
 
         .admin-container {
             margin-top: 100px;
+            display: none;
         }
 
         .box {
@@ -91,30 +120,55 @@
 </head>
 <body>
 
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    <div class="menu" id="menu">
-        <a href="add_vendor.html">Add Vendor</a>
-        <a href="add_daily_pay.html">Add Daily Pay</a>
-        <a href="withdrawal_portal.html">Withdrawal Portal</a>
-        <a href="airtime_data_portal.html">Airtime & Data Portal</a>
-        <a href="add_sp_post.html">Add SP Post</a>
+    <!-- LOGIN SCREEN -->
+    <div class="login-container" id="loginContainer">
+        <h2>Admin Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="checkLogin()">Login</button>
+        <p id="loginError" style="color: yellow; display: none;">Invalid login credentials!</p>
     </div>
 
-    <div class="admin-container">
-        <div class="box">
-            <h2>Welcome Admin</h2>
-            <div class="total-users">
-                Total Users 👥
-            </div>
-            <div class="user-count" id="userCount">Loading...</div>
+    <!-- ADMIN PANEL (HIDDEN BY DEFAULT) -->
+    <div id="adminPanel" style="display: none;">
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <div class="menu" id="menu">
+            <a href="add_vendor.html">Add Vendor</a>
+            <a href="add_daily_pay.html">Add Daily Pay</a>
+            <a href="withdrawal_portal.html">Withdrawal Portal</a>
+            <a href="airtime_data_portal.html">Airtime & Data Portal</a>
+            <a href="add_sp_post.html">Add SP Post</a>
+            <a href="generate_PayMaxxcoupon.html">Generate Coupon</a>  <!-- Added Generate Coupon -->
+        </div>
 
-            <div class="admin-photo">
-                <img src="https://i.postimg.cc/MGL5Wd0w/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250319-065546-0000.png" alt="Admin Photo">
+        <div class="admin-container">
+            <div class="box">
+                <h2>Welcome Admin</h2>
+                <div class="total-users">
+                    Total Users 👥
+                </div>
+                <div class="user-count" id="userCount">Loading...</div>
+
+                <div class="admin-photo">
+                    <img src="https://i.postimg.cc/MGL5Wd0w/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250319-065546-0000.png" alt="Admin Photo">
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        function checkLogin() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (username === "admin6820" && password === "admin6820") {
+                document.getElementById("loginContainer").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+            } else {
+                document.getElementById("loginError").style.display = "block";
+            }
+        }
+
         function toggleMenu() {
             var menu = document.getElementById("menu");
             menu.style.display = menu.style.display === "block" ? "none" : "block";
