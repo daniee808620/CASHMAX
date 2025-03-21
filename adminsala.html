@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Arimo', sans-serif;
+            background-color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-btn {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            border-radius: 5px;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background: white;
+            color: blue;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu a {
+            display: block;
+            color: blue;
+            text-decoration: none;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .admin-container {
+            margin-top: 100px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .total-users {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: blue;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .user-count {
+            color: blue;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <div class="menu" id="menu">
+        <a href="add_vendor.html">Add Vendor</a>
+        <a href="add_daily_pay.html">Add Daily Pay</a>
+        <a href="withdrawal_portal.html">Withdrawal Portal</a>
+        <a href="airtime_data_portal.html">Airtime & Data Portal</a>
+        <a href="add_sp_post.html">Add SP Post</a>
+    </div>
+
+    <div class="admin-container">
+        <div class="box">
+            <h2>Welcome Admin</h2>
+            <div class="total-users">
+                Total Users 👥
+            </div>
+            <div class="user-count" id="userCount">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        // Simulating user count from localStorage
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        document.getElementById("userCount").innerText = users.length;
+    </script>
+
+</body>
+</html>
