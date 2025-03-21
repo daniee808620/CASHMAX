@@ -115,6 +115,7 @@
             <input type="text" id="username" placeholder="Username" required>
             <input type="text" id="phone" placeholder="Phone Number" required>
             <input type="email" id="email" placeholder="Email" required>
+            <input type="text" id="country" placeholder="Country" required>
             <input type="text" id="referredBy" placeholder="Referred By (Optional)">
             <select id="package" required>
                 <option value="">Select Package</option>
@@ -139,16 +140,41 @@
         document.getElementById("signupForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
+            var username = document.getElementById("username").value.trim();
+            var phone = document.getElementById("phone").value.trim();
+            var email = document.getElementById("email").value.trim();
+            var country = document.getElementById("country").value.trim();
+            var packageType = document.getElementById("package").value.trim();
+            var password = document.getElementById("password").value.trim();
             var couponCode = document.getElementById("coupon").value.trim();
-            var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || [];
 
-            if (!storedCoupons.includes(couponCode)) {
+            // Fetch stored coupons from localStorage
+            var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
+
+            if (!storedCoupons[couponCode]) {
                 alert("Invalid Coupon Code. Please buy a valid coupon.");
                 return;
             }
 
-            // Simulate successful registration
+            if (storedCoupons[couponCode].status === "Used") {
+                alert("This coupon has already been used by " + storedCoupons[couponCode].usedBy + ". Please buy a new coupon.");
+                return;
+            }
+
+            // Mark coupon as used and store user details
+            storedCoupons[couponCode] = {
+                status: "Used",
+                usedBy: username,
+                phone: phone,
+                email: email,
+                country: country,
+                package: packageType
+            };
+            localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
+
+            // Show success message
             document.getElementById("successMessage").style.display = "block";
+
             setTimeout(() => {
                 window.location.href = "login.html";
             }, 3000);
