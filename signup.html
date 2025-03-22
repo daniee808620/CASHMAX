@@ -102,11 +102,11 @@
     <img src="https://i.postimg.cc/VLWjC9SN/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250321-225402-0000.png" alt="Logo" class="logo">
 
     <div class="message-box success-message" id="successMessage">
-        <span class="checkmark">✔</span> Registration Successful! Proceed to log in.
+        <span class="checkmark">✔</span> Registration Successful! You can now log in.
     </div>
 
     <div class="message-box error-message" id="errorMessage">
-        <span class="error-icon">✖</span> Error: Invalid coupon code. Please try again.
+        <span class="error-icon">✖</span> <span id="errorText">Error: Invalid coupon code. Please try again.</span>
     </div>
 
     <div class="signup-container">
@@ -150,23 +150,31 @@
             var password = document.getElementById("password").value.trim();
             var couponCode = document.getElementById("coupon").value.trim();
 
+            var errorMessage = document.getElementById("errorMessage");
+            var successMessage = document.getElementById("successMessage");
+            var errorText = document.getElementById("errorText");
+
+            // Hide messages before validation
+            errorMessage.style.display = "none";
+            successMessage.style.display = "none";
+
             var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
 
             if (!storedCoupons[couponCode]) {
-                document.getElementById("errorMessage").innerHTML = '<span class="error-icon">✖</span> Error: Invalid coupon code. Please try again.';
-                document.getElementById("errorMessage").style.display = "flex";
+                errorText.innerText = "Error: Invalid coupon code. Please try again.";
+                errorMessage.style.display = "flex";
                 return;
             }
 
             if (storedCoupons[couponCode].status === "Used") {
-                document.getElementById("errorMessage").innerHTML = '<span class="error-icon">✖</span> Error: This coupon has already been used.';
-                document.getElementById("errorMessage").style.display = "flex";
+                errorText.innerText = "Error: This coupon has already been used.";
+                errorMessage.style.display = "flex";
                 return;
             }
 
             if (storedCoupons[couponCode].country !== country) {
-                document.getElementById("errorMessage").innerHTML = '<span class="error-icon">✖</span> Error: This coupon is only valid for users in ' + storedCoupons[couponCode].country + '.';
-                document.getElementById("errorMessage").style.display = "flex";
+                errorText.innerText = "Error: This coupon is only valid for users in " + storedCoupons[couponCode].country + ".";
+                errorMessage.style.display = "flex";
                 return;
             }
 
@@ -179,13 +187,11 @@
             users.push({ username, email, password, phone, country, packageType });
             localStorage.setItem("registeredUsers", JSON.stringify(users));
 
-            // Hide error message (if visible)
-            document.getElementById("errorMessage").style.display = "none";
-
             // Show success message
-            document.getElementById("successMessage").innerHTML = '<span class="checkmark">✔</span> Registration Successful! You can now log in.';
-            document.getElementById("successMessage").style.display = "flex";
+            successMessage.innerHTML = '<span class="checkmark">✔</span> Registration Successful! You can now log in.';
+            successMessage.style.display = "flex";
 
+            // Redirect after 3 seconds
             setTimeout(() => { window.location.href = "login.html"; }, 3000);
         });
     </script>
