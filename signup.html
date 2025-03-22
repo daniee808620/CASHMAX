@@ -103,40 +103,42 @@
 
     <script>
         document.getElementById("signupForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            var username = document.getElementById("username").value.trim();
-            var phone = document.getElementById("phone").value.trim();
-            var email = document.getElementById("email").value.trim();
-            var country = document.getElementById("country").value.trim();
-            var packageType = document.getElementById("package").value.trim();
-            var password = document.getElementById("password").value.trim();
-            var couponCode = document.getElementById("coupon").value.trim();
+    var username = document.getElementById("username").value.trim();
+    var phone = document.getElementById("phone").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var country = document.getElementById("country").value.trim();
+    var packageType = document.getElementById("package").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var couponCode = document.getElementById("coupon").value.trim();
 
-            var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
+    var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
 
-            if (!storedCoupons[couponCode]) {
-                alert("Invalid Coupon Code. Please buy a valid coupon.");
-                return;
-            }
+    if (!storedCoupons[couponCode]) {
+        alert("Invalid Coupon Code. Please buy a valid coupon.");
+        return;
+    }
 
-            if (storedCoupons[couponCode].status === "Used") {
-                alert("This coupon has already been used. Please buy a new coupon.");
-                return;
-            }
+    if (storedCoupons[couponCode].status === "Used") {
+        alert("This coupon has already been used. Please buy a new coupon.");
+        return;
+    }
 
-            if (storedCoupons[couponCode].country !== country) {
-                alert("This coupon is only valid for users in " + storedCoupons[couponCode].country + ".");
-                return;
-            }
+    if (storedCoupons[couponCode].country !== country) {
+        alert("This coupon is only valid for users in " + storedCoupons[couponCode].country + ".");
+        return;
+    }
 
-            storedCoupons[couponCode].status = "Used";
-            localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
+    // Mark the coupon as used
+    storedCoupons[couponCode].status = "Used";
+    localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
 
-            document.getElementById("successMessage").style.display = "block";
-            setTimeout(() => { window.location.href = "login.html"; }, 3000);
-        });
-    </script>
+    // Store user data
+    var users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+    users.push({ username, email, password, phone, country, packageType });
+    localStorage.setItem("registeredUsers", JSON.stringify(users));
 
-</body>
-</html>
+    document.getElementById("successMessage").style.display = "block";
+    setTimeout(() => { window.location.href = "login.html"; }, 3000);
+});
