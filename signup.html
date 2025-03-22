@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - PayMax</title>
+    <title>Sign Up</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
 
@@ -14,40 +14,6 @@
             margin: 0;
             padding: 0;
             text-align: center;
-        }
-        .header img {
-            width: 150px;
-            height: 150px;
-            display: block;
-            margin: 20px auto;
-        }
-        .menu-btn {
-            background-color: blue;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            border-radius: 5px;
-        }
-        .menu {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 20px;
-            background: white;
-            color: blue;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .menu a {
-            display: block;
-            color: blue;
-            text-decoration: none;
-            padding: 10px;
         }
         .signup-container {
             width: 90%;
@@ -67,7 +33,7 @@
         .btn {
             background-color: blue;
             color: white;
-            padding: 10px 15px;
+            padding: 10px;
             border: none;
             border-radius: 20px;
             cursor: pointer;
@@ -95,19 +61,7 @@
 </head>
 <body>
 
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    <div class="menu" id="menu">
-        <a href="login.html">Login</a>
-        <a href="index.html">Home</a>
-        <a href="check_coupon.html">Check Coupon</a>
-        <a href="buy_coupon.html">Buy Coupon</a>
-    </div>
-
-    <div class="header">
-        <img src="https://i.postimg.cc/c4CGTgbQ/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250319-065546-0000-rem.png" alt="PayMax Logo">
-    </div>
-
-    <div class="success-message" id="successMessage">✅ Registration Successful! Welcome to PayMax.</div>
+    <div class="success-message" id="successMessage">✅ Registration Successful!</div>
 
     <div class="signup-container">
         <h2>Sign Up</h2>
@@ -116,7 +70,6 @@
             <input type="text" id="phone" placeholder="Phone Number" required>
             <input type="email" id="email" placeholder="Email" required>
             <input type="text" id="country" placeholder="Country" required>
-            <input type="text" id="referredBy" placeholder="Referred By (Optional)">
             <select id="package" required>
                 <option value="">Select Package</option>
                 <option value="Lite">Lite (₦750)</option>
@@ -132,11 +85,6 @@
     </div>
 
     <script>
-        function toggleMenu() {
-            var menu = document.getElementById("menu");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
-        }
-
         document.getElementById("signupForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
@@ -148,7 +96,6 @@
             var password = document.getElementById("password").value.trim();
             var couponCode = document.getElementById("coupon").value.trim();
 
-            // Fetch stored coupons from localStorage
             var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
 
             if (!storedCoupons[couponCode]) {
@@ -157,27 +104,20 @@
             }
 
             if (storedCoupons[couponCode].status === "Used") {
-                alert("This coupon has already been used by " + storedCoupons[couponCode].usedBy + ". Please buy a new coupon.");
+                alert("This coupon has already been used. Please buy a new coupon.");
                 return;
             }
 
-            // Mark coupon as used and store user details
-            storedCoupons[couponCode] = {
-                status: "Used",
-                usedBy: username,
-                phone: phone,
-                email: email,
-                country: country,
-                package: packageType
-            };
+            if (storedCoupons[couponCode].country !== country) {
+                alert("This coupon is only valid for users in " + storedCoupons[couponCode].country + ".");
+                return;
+            }
+
+            storedCoupons[couponCode].status = "Used";
             localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
 
-            // Show success message
             document.getElementById("successMessage").style.display = "block";
-
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 3000);
+            setTimeout(() => { window.location.href = "login.html"; }, 3000);
         });
     </script>
 
