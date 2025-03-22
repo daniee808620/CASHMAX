@@ -13,23 +13,26 @@
             font-family: 'Arimo', sans-serif;
             margin: 0;
             padding: 0;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
         }
         .container {
             width: 90%;
             max-width: 400px;
-            margin: 30px auto;
             padding: 20px;
             background: rgba(0, 0, 255, 0.1);
             border-radius: 10px;
+            text-align: center;
             position: relative;
         }
         .logo {
             width: 70px;
             height: 70px;
             border-radius: 5px;
-            display: block;
-            margin: 10px auto;
+            margin-bottom: 10px;
         }
         input {
             width: 90%;
@@ -101,6 +104,16 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        .links {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .links a {
+            color: blue;
+            text-decoration: none;
+            display: block;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -123,6 +136,12 @@
         <input type="text" id="usernameOrEmail" placeholder="Username or Email">
         <input type="password" id="password" placeholder="Password">
         <button class="btn" onclick="login()">Login</button>
+
+        <!-- Forgot Password & Signup Links -->
+        <div class="links">
+            <a href="forgot_password.html">Forgot Password?</a>
+            <a href="signup.html">Don't have an account? Sign Up</a>
+        </div>
     </div>
 
     <script>
@@ -147,19 +166,21 @@
                 return;
             }
 
+            // Get stored user data from signup.html
             var users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
 
+            // Check if user exists
             var validUser = users.find(user => 
                 (user.username === usernameOrEmail || user.email === usernameOrEmail) && user.password === password
             );
 
             if (validUser) {
-                showMessage("Login successful! Welcome, " + validUser.username, "success");
+                showMessage("✅ Login successful! Welcome, " + validUser.username, "success");
                 setTimeout(() => {
                     window.location.href = "dashboard.html";  // Redirect to dashboard
                 }, 2000);
             } else {
-                showMessage("Invalid username/email or password.", "error");
+                showMessage("❌ Invalid username/email or password.", "error");
             }
         }
     </script>
