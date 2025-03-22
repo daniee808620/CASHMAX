@@ -53,6 +53,13 @@
 
         .balance-box p {
             margin: 5px 0;
+            color: white; /* Ensures balance text remains white */
+        }
+
+        .earnings-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: white; /* Ensures balance text remains white */
         }
 
         .withdraw-btn {
@@ -88,7 +95,7 @@
             color: #555;
         }
 
-        .earnings-amount {
+        .earnings-amount-small {
             font-size: 18px;
             font-weight: bold;
             color: #0033cc;
@@ -144,7 +151,6 @@
             top: 40px;
             left: 10px;
             background: #0033cc;
-            color: white;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
             padding: 10px;
             border-radius: 5px;
@@ -156,7 +162,7 @@
             color: white;
             text-decoration: none;
             font-size: 14px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid white;
         }
 
         .menu a:last-child {
@@ -192,15 +198,15 @@
         <div class="earnings-container">
             <div class="earnings-card">
                 <p class="earnings-title">Activity Earnings</p>
-                <p class="earnings-amount">₦<span id="activityEarnings">0.00</span></p>
+                <p class="earnings-amount-small">₦<span id="activityEarnings">0.00</span></p>
             </div>
             <div class="earnings-card">
                 <p class="earnings-title">Referral Earnings</p>
-                <p class="earnings-amount">₦<span id="referralEarnings">0.00</span></p>
+                <p class="earnings-amount-small">₦<span id="referralEarnings">0.00</span></p>
             </div>
             <div class="earnings-card">
                 <p class="earnings-title">Indirect Bonus</p>
-                <p class="earnings-amount">₦<span id="indirectBonus">0.00</span></p>
+                <p class="earnings-amount-small">₦<span id="indirectBonus">0.00</span></p>
             </div>
         </div>
 
@@ -226,10 +232,14 @@
             alert("Referral link copied!");
         }
 
-        // Fetch stored user data
-        var validUser = JSON.parse(localStorage.getItem("user")) || { username: "User", balance: 0 };
-        document.getElementById("username").innerText = validUser.username;
-        document.getElementById("totalBalance").innerText = validUser.balance.toFixed(2);
+        // Get username from LocalStorage
+        document.getElementById("username").innerText = localStorage.getItem("username") || "User";
+
+        // Get balances from LocalStorage (or default to 0)
+        document.getElementById("totalBalance").innerText = localStorage.getItem("totalBalance") || "0.00";
+        document.getElementById("activityEarnings").innerText = localStorage.getItem("activityEarnings") || "0.00";
+        document.getElementById("referralEarnings").innerText = localStorage.getItem("referralEarnings") || "0.00";
+        document.getElementById("indirectBonus").innerText = localStorage.getItem("indirectBonus") || "0.00";
     </script>
 
 </body>
