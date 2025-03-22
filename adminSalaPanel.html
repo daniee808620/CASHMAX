@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Admin Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Arimo&display=swap" rel="stylesheet">
     <style>
         body {
@@ -28,6 +28,40 @@
             position: relative;
         }
 
+        .admin-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0033cc;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background: #0033cc;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Admin Panel Styles */
         .hamburger {
             position: absolute;
             top: 10px;
@@ -43,14 +77,15 @@
             top: 40px;
             left: 10px;
             background: #0033cc;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
             padding: 10px;
             border-radius: 5px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            width: 200px;
         }
 
         .menu a {
             display: block;
-            padding: 8px;
+            padding: 10px;
             color: white;
             text-decoration: none;
             font-size: 14px;
@@ -61,138 +96,92 @@
             border-bottom: none;
         }
 
-        .balance-box {
+        .total-users {
             background: #0033cc;
             color: white;
             padding: 15px;
             border-radius: 8px;
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        .balance-box p {
-            margin: 5px 0;
-            color: white;
-        }
-
-        .earnings-amount {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
-            color: white;
-        }
-
-        .btn {
-            background: #0033cc;
-            color: white;
-            padding: 10px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            display: inline-block;
-            width: 100%;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .login-container {
-            width: 90%;
-            max-width: 300px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .login-btn {
-            background: #0033cc;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-            width: 100%;
+            margin: 15px 0;
         }
     </style>
 </head>
 <body>
 
-    <div id="loginPage" class="login-container">
-        <h2>Admin Login</h2>
-        <input type="text" id="adminUsername" placeholder="Username">
-        <input type="password" id="adminPassword" placeholder="Password">
-        <button class="login-btn" onclick="checkLogin()">Login</button>
+    <!-- Login Form -->
+    <div class="container" id="loginBox">
+        <div class="admin-title">Admin Login</div>
+        <input type="text" id="username" class="input-field" placeholder="Username">
+        <input type="password" id="password" class="input-field" placeholder="Password">
+        <button class="btn" onclick="login()">Login</button>
+        <p id="error" style="color: red; display: none;">Invalid Credentials</p>
     </div>
 
-    <div id="adminPanel" class="container" style="display: none;">
+    <!-- Admin Panel -->
+    <div class="container hidden" id="adminPanel">
         <div class="hamburger" onclick="toggleMenu()">☰</div>
         <div class="menu" id="menu">
             <a href="generate_coupon.html">Generate Coupon</a>
-            <a href="dailypay.html">Add Daily Pay</a>
-            <a href="spost.html">Add SP Post</a>
+            <a href="dailypay.html">Daily Pay</a>
+            <a href="so_post.html">SP Post</a>
             <a href="withdrawal_portal.html">Withdrawal Portal</a>
-            <a href="airtime_data.html">Open Airtime & Data Portal</a>
+            <a href="airtime_data.html">Airtime & Data Portal</a>
             <a href="total_users.html">Total Users</a>
             <a href="remove_vendor.html">Remove Vendor</a>
             <a href="add_vendor.html">Add Vendor</a>
         </div>
 
-        <h2>Admin Dashboard</h2>
+        <div class="admin-title">Admin Panel</div>
 
-        <div class="balance-box">
-            <p>Total Users</p>
-            <p class="earnings-amount"><span id="registeredUsers">0</span></p>
+        <div class="total-users">
+            Total Users: <span id="totalUsers">0</span>
         </div>
 
         <a href="broadcast.html" class="btn">Add Broadcast</a>
-        <a href="#" class="btn" onclick="logout()">Logout</a>
+        <button class="btn" onclick="logout()">Logout</button>
     </div>
 
     <script>
+        // Admin Login Credentials (Can be changed)
+        const ADMIN_USERNAME = "admin";
+        const ADMIN_PASSWORD = "12345";
+
+        function login() {
+            let user = document.getElementById("username").value;
+            let pass = document.getElementById("password").value;
+
+            if (user === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
+                localStorage.setItem("isLoggedIn", "true");
+                document.getElementById("loginBox").classList.add("hidden");
+                document.getElementById("adminPanel").classList.remove("hidden");
+                loadTotalUsers();
+            } else {
+                document.getElementById("error").style.display = "block";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            location.reload();
+        }
+
         function toggleMenu() {
             var menu = document.getElementById("menu");
             menu.style.display = menu.style.display === "block" ? "none" : "block";
         }
 
-        function checkLogin() {
-            var username = document.getElementById("adminUsername").value;
-            var password = document.getElementById("adminPassword").value;
-
-            if (username === "admin808620" && password === "admin808620") {
-                localStorage.setItem("isAdmin", "true");
-                document.getElementById("loginPage").style.display = "none";
-                document.getElementById("adminPanel").style.display = "block";
-                loadAdminData();
-            } else {
-                alert("Invalid login details");
-            }
+        function loadTotalUsers() {
+            var registeredUsers = localStorage.getItem("registeredUsers") || 0;
+            document.getElementById("totalUsers").innerText = registeredUsers;
         }
 
-        function logout() {
-            localStorage.removeItem("isAdmin");
-            location.reload();
-        }
-
-        function loadAdminData() {
-            document.getElementById("registeredUsers").innerText = localStorage.getItem("registeredUsers") || "0";
-        }
-
-        window.onload = function () {
-            if (localStorage.getItem("isAdmin") === "true") {
-                document.getElementById("loginPage").style.display = "none";
-                document.getElementById("adminPanel").style.display = "block";
-                loadAdminData();
+        // Auto-login check
+        window.onload = function() {
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                document.getElementById("loginBox").classList.add("hidden");
+                document.getElementById("adminPanel").classList.remove("hidden");
+                loadTotalUsers();
             }
         };
     </script>
