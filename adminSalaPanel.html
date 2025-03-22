@@ -4,129 +4,197 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #1565c0; /* Solid blue background */
-            text-align: center;
+            font-family: Arimo, sans-serif;
+            background-color: #f4f6fb;
             margin: 0;
             padding: 0;
-            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .container {
+            width: 90%;
+            max-width: 400px;
             background: white;
             padding: 20px;
-            width: 320px;
-            margin: 50px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            color: black;
-        }
-
-        .total-users {
-            font-size: 18px;
-            font-weight: bold;
-            background: #1565c0;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .user-count {
-            font-size: 22px;
-            font-weight: bold;
-            color: #1565c0;
-        }
-
-        .rectangular-image {
-            width: 100%;
-            border-radius: 5px;
-            margin-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
         }
 
         .hamburger {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             cursor: pointer;
-            padding: 10px;
-            background: #28a745;
-            color: white;
-            font-weight: bold;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 20px;
+            font-size: 20px;
+            color: #0033cc;
         }
 
-        .hamburger:hover {
-            background: #218838;
-        }
-
-        .admin-buttons {
+        .menu {
             display: none;
-            margin-top: 10px;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background: #0033cc;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .admin-buttons a {
+        .menu a {
             display: block;
-            background: #28a745;
+            padding: 8px;
             color: white;
             text-decoration: none;
-            padding: 10px;
-            margin: 5px auto;
-            width: 200px;
-            font-weight: bold;
-            border-radius: 5px;
+            font-size: 14px;
+            border-bottom: 1px solid white;
         }
 
-        .admin-buttons a:hover {
-            background: #218838;
+        .menu a:last-child {
+            border-bottom: none;
+        }
+
+        .balance-box {
+            background: #0033cc;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .balance-box p {
+            margin: 5px 0;
+            color: white;
+        }
+
+        .earnings-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .btn {
+            background: #0033cc;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+            width: 100%;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .login-container {
+            width: 90%;
+            max-width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            background: #0033cc;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
         }
     </style>
 </head>
-<body onload="checkLogin()">
+<body>
 
-    <div class="container">
-        <h2>Admin Dashboard</h2>
-        <div class="total-users">Total Users 👥</div>
-        <div class="user-count" id="userCount">Loading...</div>
+    <div id="loginPage" class="login-container">
+        <h2>Admin Login</h2>
+        <input type="text" id="adminUsername" placeholder="Username">
+        <input type="password" id="adminPassword" placeholder="Password">
+        <button class="login-btn" onclick="checkLogin()">Login</button>
+    </div>
 
-        <img src="https://i.postimg.cc/VLWjC9SN/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250321-225402-0000.png" 
-             alt="Admin Dashboard Image" class="rectangular-image">
-
-        <div class="hamburger" onclick="toggleMenu()">☰ Menu</div>
-
-        <div class="admin-buttons" id="adminMenu">
-            <a href="add_vendor.html">Add Vendor</a>
-            <a href="add_daily_pay.html">Add Daily Pay</a>
-            <a href="withdrawal_portal.html">Withdrawal Portal</a>
-            <a href="airtime_data_portal.html">Airtime & Data Portal</a>
-            <a href="add_sp_post.html">Add SP Post</a>
+    <div id="adminPanel" class="container" style="display: none;">
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <div class="menu" id="menu">
             <a href="generate_coupon.html">Generate Coupon</a>
+            <a href="dailypay.html">Add Daily Pay</a>
+            <a href="spost.html">Add SP Post</a>
+            <a href="withdrawal_portal.html">Withdrawal Portal</a>
+            <a href="airtime_data.html">Open Airtime & Data Portal</a>
+            <a href="total_users.html">Total Users</a>
+            <a href="remove_vendor.html">Remove Vendor</a>
+            <a href="add_vendor.html">Add Vendor</a>
         </div>
 
-        <button onclick="logout()" style="margin-top: 20px; background: red;">Logout</button>
+        <h2>Admin Dashboard</h2>
+
+        <div class="balance-box">
+            <p>Total Users</p>
+            <p class="earnings-amount"><span id="registeredUsers">0</span></p>
+        </div>
+
+        <a href="broadcast.html" class="btn">Add Broadcast</a>
+        <a href="#" class="btn" onclick="logout()">Logout</a>
     </div>
 
     <script>
-        function checkLogin() {
-            if (sessionStorage.getItem("isAdminLoggedIn") !== "true") {
-                window.location.href = "adminLogin.html"; // Redirect if not logged in
-            }
-
-            // Simulating user count from localStorage
-            let users = JSON.parse(localStorage.getItem("users")) || [];
-            document.getElementById("userCount").innerText = users.length;
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
         }
 
-        function toggleMenu() {
-            var menu = document.getElementById("adminMenu");
-            menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
+        function checkLogin() {
+            var username = document.getElementById("adminUsername").value;
+            var password = document.getElementById("adminPassword").value;
+
+            if (username === "admin808620" && password === "admin808620") {
+                localStorage.setItem("isAdmin", "true");
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+                loadAdminData();
+            } else {
+                alert("Invalid login details");
+            }
         }
 
         function logout() {
-            sessionStorage.removeItem("isAdminLoggedIn"); // Clear login state
-            window.location.href = "adminLogin.html"; // Redirect to login
+            localStorage.removeItem("isAdmin");
+            location.reload();
         }
+
+        function loadAdminData() {
+            document.getElementById("registeredUsers").innerText = localStorage.getItem("registeredUsers") || "0";
+        }
+
+        window.onload = function () {
+            if (localStorage.getItem("isAdmin") === "true") {
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+                loadAdminData();
+            }
+        };
     </script>
 
 </body>
