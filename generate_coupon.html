@@ -121,20 +121,24 @@
             }
 
             var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
-
             var newCoupons = [];
             var currentDate = new Date().toLocaleDateString();
             var currentTime = new Date().toLocaleTimeString();
             var prefix = "";
 
-            if (packageType === "Lite") prefix = "75";
-            if (packageType === "Standard") prefix = "15";
-            if (packageType === "Premium") prefix = "30";
+            // Determine prefix based on package type
+            if (packageType === "Lite") {
+                prefix = "75";
+            } else if (packageType === "Standard") {
+                prefix = "15";
+            } else if (packageType === "Premium") {
+                prefix = "30";
+            }
 
             for (var i = 0; i < quantity; i++) {
-                var randomPart = Math.random().toString(36).substr(2, 12).toUpperCase();
-                var couponCode = prefix + randomPart.substring(0, 13); // Ensure total length is 15
-                
+                var randomPart = Math.random().toString(36).substr(2, 11).toUpperCase(); 
+                var couponCode = prefix + randomPart; // Ensure 15-character length
+
                 storedCoupons[couponCode] = {
                     status: "Active",
                     package: packageType,
