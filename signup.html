@@ -40,34 +40,46 @@
             width: 100%;
             font-weight: bold;
         }
-        .success-message {
+        .message-box {
             display: none;
-            background-color: green;
-            color: white;
             padding: 10px;
             margin: 10px auto;
             width: 80%;
             max-width: 400px;
             border-radius: 5px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .checkmark {
+        .success-message {
+            background-color: green;
+            color: white;
+        }
+        .error-message {
+            background-color: red;
+            color: white;
+        }
+        .checkmark, .error-icon {
             display: inline-block;
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background-color: white;
-            color: green;
             font-size: 18px;
             font-weight: bold;
             margin-right: 10px;
             text-align: center;
             line-height: 24px;
             border: 2px solid white;
+        }
+        .checkmark {
+            background-color: white;
+            color: green;
+        }
+        .error-icon {
+            background-color: white;
+            color: red;
         }
         .buy-coupon {
             color: blue;
@@ -89,8 +101,12 @@
 
     <img src="https://i.postimg.cc/VLWjC9SN/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250321-225402-0000.png" alt="Logo" class="logo">
 
-    <div class="success-message" id="successMessage">
-        <span class="checkmark">✔</span> Registration Successful!
+    <div class="message-box success-message" id="successMessage">
+        <span class="checkmark">✔</span> Registration Successful! Proceed to log in.
+    </div>
+
+    <div class="message-box error-message" id="errorMessage">
+        <span class="error-icon">✖</span> Error: Invalid coupon code. Please try again.
     </div>
 
     <div class="signup-container">
@@ -137,17 +153,20 @@
             var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
 
             if (!storedCoupons[couponCode]) {
-                setTimeout(() => { alert("Invalid Coupon Code. Please buy a valid coupon."); }, 100);
+                document.getElementById("errorMessage").innerHTML = '<span class="error-icon">✖</span> Error: Invalid coupon code. Please try again.';
+                document.getElementById("errorMessage").style.display = "flex";
                 return;
             }
 
             if (storedCoupons[couponCode].status === "Used") {
-                setTimeout(() => { alert("This coupon has already been used. Please buy a new coupon."); }, 100);
+                document.getElementById("errorMessage").innerHTML = '<span class="error-icon">✖</span> Error: This coupon has already been used.';
+                document.getElementById("errorMessage").style.display = "flex";
                 return;
             }
 
             if (storedCoupons[couponCode].country !== country) {
-                setTimeout(() => { alert("This coupon is only valid for users in " + storedCoupons[couponCode].country + "."); }, 100);
+                document.getElementById("errorMessage").innerHTML = '<span class="error-icon">✖</span> Error: This coupon is only valid for users in ' + storedCoupons[couponCode].country + '.';
+                document.getElementById("errorMessage").style.display = "flex";
                 return;
             }
 
@@ -160,7 +179,13 @@
             users.push({ username, email, password, phone, country, packageType });
             localStorage.setItem("registeredUsers", JSON.stringify(users));
 
+            // Hide error message (if visible)
+            document.getElementById("errorMessage").style.display = "none";
+
+            // Show success message
+            document.getElementById("successMessage").innerHTML = '<span class="checkmark">✔</span> Registration Successful! You can now log in.';
             document.getElementById("successMessage").style.display = "flex";
+
             setTimeout(() => { window.location.href = "login.html"; }, 3000);
         });
     </script>
