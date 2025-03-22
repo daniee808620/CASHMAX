@@ -4,10 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #0052D4, #4364F7);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hamburger Button */
+        .hamburger {
+            font-size: 30px;
+            cursor: pointer;
+            padding: 15px;
+            color: white;
+            background: #003399;
+            text-align: left;
+        }
+
+        /* Sidebar (Hidden by Default) */
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            height: 100%;
+            background: #003366;
+            transition: 0.3s;
+            padding-top: 50px;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            background: #0052D4;
+        }
+
+        /* Dashboard Container */
+        .dashboard {
+            margin-top: 50px;
+            padding: 20px;
+        }
+
+        /* Balance Box */
+        .balance-box {
+            background: white;
+            color: #0052D4;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+
+        /* Referral Box */
+        .referral-box {
+            background: white;
+            color: #0052D4;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
+
     <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
 
     <div class="sidebar" id="sidebar">
@@ -18,7 +99,7 @@
             <li><a href="referrals.html">My Referrals</a></li>
             <li><a href="loan.html">Loan</a></li>
             <li><a href="spinWin.html">Spin and Win</a></li>
-            <li class="menu-divider">More</li>
+            <li class="menu-divider"><strong>More</strong></li>
             <li><a href="withdraw.html">Withdraw Funds</a></li>
             <li><a href="bank.html">Bank</a></li>
             <li><a href="account.html">Account Settings</a></li>
@@ -63,8 +144,9 @@
         } else if (userPlan === 3000) {
             referralBonus = 2000;
         }
-        
+
         document.getElementById("referralBonus").innerText = referralBonus;
     </script>
+
 </body>
 </html>
