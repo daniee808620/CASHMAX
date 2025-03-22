@@ -28,40 +28,6 @@
             position: relative;
         }
 
-        .admin-title {
-            font-size: 22px;
-            font-weight: bold;
-            color: #0033cc;
-            margin-bottom: 10px;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .btn {
-            background: #0033cc;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            text-decoration: none;
-            display: block;
-            margin: 10px 0;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Admin Panel Styles */
         .hamburger {
             position: absolute;
             top: 10px;
@@ -80,12 +46,12 @@
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
             padding: 10px;
             border-radius: 5px;
-            width: 200px;
+            z-index: 10;
         }
 
         .menu a {
             display: block;
-            padding: 10px;
+            padding: 8px;
             color: white;
             text-decoration: none;
             font-size: 14px;
@@ -96,100 +62,118 @@
             border-bottom: none;
         }
 
-        .total-users {
+        .admin-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0033cc;
+            margin: 15px 0;
+        }
+
+        .balance-box {
             background: #0033cc;
             color: white;
             padding: 15px;
             border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 15px 0;
+            margin-bottom: 15px;
         }
 
-        .user-count {
-            font-size: 22px;
+        .balance-box p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .total-users {
+            font-size: 24px;
             font-weight: bold;
             color: white;
-            display: block;
-            margin-top: 5px;
+        }
+
+        .button {
+            background: #0033cc;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            display: inline-block;
+            margin: 5px;
+            width: 100%;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Login Form -->
-    <div class="container" id="loginBox">
-        <div class="admin-title">Admin Login</div>
-        <input type="text" id="username" class="input-field" placeholder="Username">
-        <input type="password" id="password" class="input-field" placeholder="Password">
-        <button class="btn" onclick="login()">Login</button>
-        <p id="error" style="color: red; display: none;">Invalid Credentials</p>
+    <div class="container" id="loginSection">
+        <h2 class="admin-title">Admin Login</h2>
+        <input type="text" id="adminUsername" placeholder="Username" class="input-field"><br><br>
+        <input type="password" id="adminPassword" placeholder="Password" class="input-field"><br><br>
+        <button class="button" onclick="adminLogin()">Login</button>
     </div>
 
-    <!-- Admin Panel -->
     <div class="container hidden" id="adminPanel">
         <div class="hamburger" onclick="toggleMenu()">☰</div>
         <div class="menu" id="menu">
+            <a href="Dailypay.html">Daily Pay</a>
+            <a href="Sopost.html">SP Post</a>
+            <a href="withdrawal.html">Withdrawal Portal</a>
+            <a href="airtime_data.html">Airtime & Data</a>
             <a href="generate_coupon.html">Generate Coupon</a>
-            <a href="dailypay.html">Daily Pay</a>
-            <a href="so_post.html">SP Post</a>
-            <a href="withdrawal_portal.html">Withdrawal Portal</a>
-            <a href="airtime_data.html">Airtime & Data Portal</a>
             <a href="total_users.html">Total Users</a>
             <a href="remove_vendor.html">Remove Vendor</a>
             <a href="add_vendor.html">Add Vendor</a>
         </div>
 
-        <div class="admin-title">Admin Panel</div>
+        <h2 class="admin-title">Admin Dashboard</h2>
 
-        <div class="total-users">
-            Total Users:
-            <span id="totalUsers" class="user-count">0</span>
+        <div class="balance-box">
+            <p>Total Users</p>
+            <p class="total-users" id="totalUsers">0</p>
         </div>
 
-        <a href="broadcast.html" class="btn">Add Broadcast</a>
-        <button class="btn" onclick="logout()">Logout</button>
+        <a href="broadcast.html" class="button">Add Broadcast</a>
+        <a href="#" class="button" onclick="adminLogout()">Logout</a>
     </div>
 
     <script>
-        // Admin Login Credentials (Can be changed)
-        const ADMIN_USERNAME = "admin";
-        const ADMIN_PASSWORD = "808620";
-
-        function login() {
-            let user = document.getElementById("username").value;
-            let pass = document.getElementById("password").value;
-
-            if (user === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
-                localStorage.setItem("isLoggedIn", "true");
-                document.getElementById("loginBox").classList.add("hidden");
-                document.getElementById("adminPanel").classList.remove("hidden");
-                loadTotalUsers();
-            } else {
-                document.getElementById("error").style.display = "block";
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem("isLoggedIn");
-            location.reload();
-        }
-
         function toggleMenu() {
             var menu = document.getElementById("menu");
             menu.style.display = menu.style.display === "block" ? "none" : "block";
         }
 
         function loadTotalUsers() {
-            // Fetch total users (Example: Fetch from backend or use local storage)
-            var registeredUsers = localStorage.getItem("registeredUsers") || 0;
-            document.getElementById("totalUsers").innerText = registeredUsers;
+            var totalUsers = localStorage.getItem("totalUsers") || 0;
+            document.getElementById("totalUsers").innerText = totalUsers;
         }
 
-        // Auto-login check
+        function adminLogin() {
+            var username = document.getElementById("adminUsername").value;
+            var password = document.getElementById("adminPassword").value;
+
+            // Replace with your actual admin credentials
+            if (username === "admin" && password === "admin123") {
+                localStorage.setItem("adminLoggedIn", "true");
+                document.getElementById("loginSection").classList.add("hidden");
+                document.getElementById("adminPanel").classList.remove("hidden");
+                loadTotalUsers();
+            } else {
+                alert("Invalid username or password");
+            }
+        }
+
+        function adminLogout() {
+            localStorage.removeItem("adminLoggedIn");
+            document.getElementById("adminPanel").classList.add("hidden");
+            document.getElementById("loginSection").classList.remove("hidden");
+        }
+
         window.onload = function() {
-            if (localStorage.getItem("isLoggedIn") === "true") {
-                document.getElementById("loginBox").classList.add("hidden");
+            if (localStorage.getItem("adminLoggedIn") === "true") {
+                document.getElementById("loginSection").classList.add("hidden");
                 document.getElementById("adminPanel").classList.remove("hidden");
                 loadTotalUsers();
             }
