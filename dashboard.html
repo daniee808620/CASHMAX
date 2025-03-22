@@ -4,172 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6fb;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 90%;
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
-        }
-        .header {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0033cc;
-            text-align: left;
-            margin-bottom: 10px;
-        }
-        .earnings-card {
-            background: linear-gradient(to right, #0033cc, #0055ff);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            position: relative;
-            text-align: center;
-        }
-        .earnings-card p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-        .earnings-amount {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .btn {
-            display: block;
-            text-align: center;
-            background-color: white;
-            color: #0033cc;
-            padding: 12px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            border: 1px solid white;
-            margin-top: 10px;
-        }
-        .btn:hover {
-            background-color: #f4f6fb;
-        }
-        .upgrade-btn {
-            background-color: #ddd;
-            color: black;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            display: block;
-            margin-top: 10px;
-        }
-        .bonus-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-        .bonus-card {
-            flex: 1;
-            background: white;
-            padding: 15px;
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 5px;
-        }
-        .bonus-title {
-            font-size: 14px;
-            color: #555;
-        }
-        .bonus-amount {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0033cc;
-        }
-        .whatsapp-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 15px;
-            text-align: center;
-        }
-        .whatsapp-card p {
-            font-size: 14px;
-            color: #555;
-        }
-        .whatsapp-btn {
-            background-color: #0033cc;
-            color: white;
-            padding: 12px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        .whatsapp-btn:hover {
-            background-color: #0022aa;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <div class="container">
-        <div class="header">Hello, <span id="username">User</span></div>
+        <h2>Hello, <span class="username">daniee</span></h2>
 
+        <!-- Earnings Section -->
         <div class="earnings-card">
-            <p>Available Earnings</p>
-            <p class="earnings-amount">₦<span id="earnings">0.00</span></p>
-            <a href="#" class="btn">Withdraw Funds →</a>
-            <a href="#" class="upgrade-btn">Upgrade Account</a>
+            <div class="top-row">
+                <h3>Available Earnings</h3>
+                <button class="eye-button">👁️</button>
+            </div>
+            <h2>₦5.00</h2>
+            <button class="upgrade-button">Upgrade Account</button>
+            <button class="withdraw-button">Withdraw Funds →</button>
         </div>
 
-        <div class="bonus-container">
+        <!-- Bonus Section -->
+        <div class="bonus-section">
             <div class="bonus-card">
-                <p class="bonus-title">Referral Bonus</p>
-                <p class="bonus-amount">₦<span id="referralBonus">0.00</span></p>
+                <h4>Referral Bonus</h4>
+                <p>₦0.00</p>
             </div>
             <div class="bonus-card">
-                <p class="bonus-title">Activity Bonus</p>
-                <p class="bonus-amount">₦<span id="activityBonus">0.00</span></p>
+                <h4>Activity Bonus</h4>
+                <p>₦5.00</p>
             </div>
         </div>
 
-        <div class="whatsapp-card">
-            <p>📢 JOIN US ON WHATSAPP</p>
-            <p>Want to get the latest news immediately? Join our channel below.</p>
-            <a href="#" class="whatsapp-btn">WhatsApp Channel →</a>
+        <!-- WhatsApp Section -->
+        <div class="whatsapp-section">
+            <h4>🔔 JOIN US ON WHATSAPP</h4>
+            <p>Want to get the latest news immediately at your fingertips? Join our channel below to stay informed.</p>
+            <button class="whatsapp-button">WhatsApp Channel →</button>
         </div>
     </div>
-
-    <script>
-        // Get username from LocalStorage
-        document.getElementById("username").innerText = localStorage.getItem("username") || "User";
-
-        // Get balances from LocalStorage (or default to 0)
-        document.getElementById("earnings").innerText = localStorage.getItem("earnings") || "0.00";
-        document.getElementById("referralBonus").innerText = localStorage.getItem("referralBonus") || "0.00";
-        document.getElementById("activityBonus").innerText = localStorage.getItem("activityBonus") || "0.00";
-
-        // Function to update balances dynamically
-        function updateBalances(earnings, referral, activity) {
-            localStorage.setItem("earnings", earnings);
-            localStorage.setItem("referralBonus", referral);
-            localStorage.setItem("activityBonus", activity);
-
-            document.getElementById("earnings").innerText = earnings;
-            document.getElementById("referralBonus").innerText = referral;
-            document.getElementById("activityBonus").innerText = activity;
-        }
-
-        // Example: Simulate earnings update (remove in real implementation)
-        setTimeout(() => {
-            updateBalances("5.00", "0.00", "5.00");
-        }, 5000);
-    </script>
 
 </body>
 </html>
