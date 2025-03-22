@@ -105,6 +105,14 @@
             font-weight: bold;
             margin: 15px 0;
         }
+
+        .user-count {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            display: block;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -135,7 +143,8 @@
         <div class="admin-title">Admin Panel</div>
 
         <div class="total-users">
-            Total Users: <span id="totalUsers">0</span>
+            Total Users:
+            <span id="totalUsers" class="user-count">0</span>
         </div>
 
         <a href="broadcast.html" class="btn">Add Broadcast</a>
@@ -145,7 +154,7 @@
     <script>
         // Admin Login Credentials (Can be changed)
         const ADMIN_USERNAME = "admin";
-        const ADMIN_PASSWORD = "admin808620";
+        const ADMIN_PASSWORD = "808620";
 
         function login() {
             let user = document.getElementById("username").value;
@@ -172,6 +181,7 @@
         }
 
         function loadTotalUsers() {
+            // Fetch total users (Example: Fetch from backend or use local storage)
             var registeredUsers = localStorage.getItem("registeredUsers") || 0;
             document.getElementById("totalUsers").innerText = registeredUsers;
         }
