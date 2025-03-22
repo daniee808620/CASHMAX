@@ -10,22 +10,18 @@
             font-family: Arimo, sans-serif;
             background-color: #0033cc;
             margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            padding: 20px;
+            text-align: center;
         }
 
         .container {
             width: 90%;
-            max-width: 400px;
+            max-width: 600px;
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            position: relative;
+            margin: 0 auto 20px;
         }
 
         .successMessage {
@@ -51,16 +47,44 @@
             background: #27ae60;
             color: white;
             padding: 12px;
-            text-decoration: none;
             border-radius: 5px;
             font-size: 14px;
-            display: inline-block;
             width: 100%;
             cursor: pointer;
             border: none;
-            margin-top: 10px;
             font-weight: bold;
         }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #0033cc;
+            color: white;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -73,31 +97,56 @@
         <h2 style="color: #0033cc;">Add Daily Pay Task</h2>
 
         <input type="text" id="taskLink" class="input-field" placeholder="Enter Task Link">
+        <input type="text" id="taskName" class="input-field" placeholder="Enter Task Name">
         <input type="number" id="taskAmount" class="input-field" placeholder="Enter Amount Earned">
         
         <button class="button" onclick="addTask()">Add Task</button>
     </div>
 
+    <table>
+        <thead>
+            <tr>
+                <th>Task Link</th>
+                <th>Task</th>
+                <th>Reward (₦)</th>
+                <th>Time Added</th>
+                <th>Date Added</th>
+                <th>Delete Task</th>
+            </tr>
+        </thead>
+        <tbody id="taskTable">
+            <!-- Tasks will be inserted here -->
+        </tbody>
+    </table>
+
     <script>
         function addTask() {
             var taskLink = document.getElementById("taskLink").value;
+            var taskName = document.getElementById("taskName").value;
             var taskAmount = document.getElementById("taskAmount").value;
+            var currentDate = new Date();
+            var timeAdded = currentDate.toLocaleTimeString();
+            var dateAdded = currentDate.toLocaleDateString();
 
-            if (taskLink === "" || taskAmount === "") {
+            if (taskLink === "" || taskAmount === "" || taskName === "") {
                 alert("Please fill in all fields!");
                 return;
             }
 
-            // Simulating storing task (You can replace this with actual backend storage)
+            // Get existing tasks
             var tasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
-            tasks.push({ link: taskLink, amount: taskAmount });
+            tasks.push({ link: taskLink, name: taskName, amount: taskAmount, time: timeAdded, date: dateAdded });
             localStorage.setItem("dailyTasks", JSON.stringify(tasks));
 
             // Show success message
             document.getElementById("successMessage").style.display = "block";
 
-            // Clear input fields after adding
+            // Refresh table
+            displayTasks();
+
+            // Clear input fields
             document.getElementById("taskLink").value = "";
+            document.getElementById("taskName").value = "";
             document.getElementById("taskAmount").value = "";
 
             // Hide success message after 3 seconds
@@ -105,6 +154,36 @@
                 document.getElementById("successMessage").style.display = "none";
             }, 3000);
         }
+
+        function displayTasks() {
+            var tasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
+            var tableBody = document.getElementById("taskTable");
+            tableBody.innerHTML = "";
+
+            tasks.forEach((task, index) => {
+                var row = `
+                    <tr>
+                        <td><a href="${task.link}" target="_blank">View Task</a></td>
+                        <td>${task.name}</td>
+                        <td>₦${task.amount}</td>
+                        <td>${task.time}</td>
+                        <td>${task.date}</td>
+                        <td><button class="delete-btn" onclick="deleteTask(${index})">Delete</button></td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function deleteTask(index) {
+            var tasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
+            tasks.splice(index, 1);
+            localStorage.setItem("dailyTasks", JSON.stringify(tasks));
+            displayTasks();
+        }
+
+        // Load tasks when the page opens
+        displayTasks();
     </script>
 
 </body>
