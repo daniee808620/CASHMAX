@@ -6,54 +6,65 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>My Dashboard</h2>
+    <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+
+    <div class="sidebar" id="sidebar">
         <ul>
-            <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#"><i class="fas fa-wallet"></i> Earnings</a></li>
-            <li><a href="#"><i class="fas fa-users"></i> Referrals</a></li>
-            <li><a href="#"><i class="fas fa-cogs"></i> Settings</a></li>
-            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="dailyPay.html">Daily Pay</a></li>
+            <li><a href="spPost.html">SP Post</a></li>
+            <li><a href="bills.html">Bills Payment</a></li>
+            <li><a href="referrals.html">My Referrals</a></li>
+            <li><a href="loan.html">Loan</a></li>
+            <li><a href="spinWin.html">Spin and Win</a></li>
+            <li class="menu-divider">More</li>
+            <li><a href="withdraw.html">Withdraw Funds</a></li>
+            <li><a href="bank.html">Bank</a></li>
+            <li><a href="account.html">Account Settings</a></li>
         </ul>
     </div>
 
-    <div class="main-content">
-        <header>
-            <h1>Welcome, <span>User</span></h1>
-        </header>
-
-        <section class="cards">
-            <div class="card">
-                <h3>Available Earnings</h3>
-                <p id="balance">₦0.00</p>
-                <button onclick="withdrawFunds()">Withdraw Funds</button>
-            </div>
-            <div class="card">
-                <h3>Referral Bonus</h3>
-                <p id="referral">₦0.00</p>
-            </div>
-            <div class="card">
-                <h3>Activity Bonus</h3>
-                <p id="activity">₦0.00</p>
-            </div>
-        </section>
-
-        <div class="upgrade">
-            <button>Upgrade Account</button>
+    <div class="dashboard">
+        <h2>Hello, <span id="username">User</span></h2>
+        <div class="balance-box">
+            <p>Available Balance</p>
+            <h1>₦<span id="balance">0.00</span></h1>
         </div>
 
-        <div class="whatsapp">
-            <h3>Join Us on WhatsApp</h3>
-            <p>Get the latest updates and news instantly.</p>
-            <a href="#" class="whatsapp-btn">WhatsApp Channel</a>
-        </div>
-
-        <div class="earnings-test">
-            <button onclick="earnMoney(100)">Simulate Earnings (+₦100)</button>
+        <div class="referral-box">
+            <h3>Referral Link</h3>
+            <p>Refer a friend and earn ₦<span id="referralBonus">0</span></p>
+            <p>Your Current Plan: <strong>₦<span id="userPlan">750</span></strong></p>
+            <p><strong>750 Plan:</strong> ₦400 | <strong>1500 Plan:</strong> ₦850 | <strong>3000 Plan:</strong> ₦2000</p>
         </div>
     </div>
+
+    <script>
+        function toggleMenu() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("open");
+        }
+
+        // Fetch user data from local storage
+        let username = localStorage.getItem("username") || "User";
+        let userPlan = parseInt(localStorage.getItem("userPlan")) || 750;
+        let balance = parseFloat(localStorage.getItem("balance")) || 0.00;
+
+        document.getElementById("username").innerText = username;
+        document.getElementById("userPlan").innerText = userPlan;
+        document.getElementById("balance").innerText = balance.toFixed(2);
+
+        let referralBonus = 0;
+        if (userPlan === 750) {
+            referralBonus = 400;
+        } else if (userPlan === 1500) {
+            referralBonus = 850;
+        } else if (userPlan === 3000) {
+            referralBonus = 2000;
+        }
+        
+        document.getElementById("referralBonus").innerText = referralBonus;
+    </script>
 </body>
 </html>
