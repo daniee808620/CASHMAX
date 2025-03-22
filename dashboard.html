@@ -5,42 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-
-    <div class="container">
-        <h2>Hello, <span class="username">daniee</span></h2>
-
-        <!-- Earnings Section -->
-        <div class="earnings-card">
-            <div class="top-row">
-                <h3>Available Earnings</h3>
-                <button class="eye-button">👁️</button>
-            </div>
-            <h2>₦5.00</h2>
-            <button class="upgrade-button">Upgrade Account</button>
-            <button class="withdraw-button">Withdraw Funds →</button>
-        </div>
-
-        <!-- Bonus Section -->
-        <div class="bonus-section">
-            <div class="bonus-card">
-                <h4>Referral Bonus</h4>
-                <p>₦0.00</p>
-            </div>
-            <div class="bonus-card">
-                <h4>Activity Bonus</h4>
-                <p>₦5.00</p>
-            </div>
-        </div>
-
-        <!-- WhatsApp Section -->
-        <div class="whatsapp-section">
-            <h4>🔔 JOIN US ON WHATSAPP</h4>
-            <p>Want to get the latest news immediately at your fingertips? Join our channel below to stay informed.</p>
-            <button class="whatsapp-button">WhatsApp Channel →</button>
-        </div>
+    <div class="sidebar">
+        <h2>My Dashboard</h2>
+        <ul>
+            <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#"><i class="fas fa-wallet"></i> Earnings</a></li>
+            <li><a href="#"><i class="fas fa-users"></i> Referrals</a></li>
+            <li><a href="#"><i class="fas fa-cogs"></i> Settings</a></li>
+            <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
     </div>
 
+    <div class="main-content">
+        <header>
+            <h1>Welcome, <span>User</span></h1>
+        </header>
+
+        <section class="cards">
+            <div class="card">
+                <h3>Available Earnings</h3>
+                <p id="balance">₦0.00</p>
+                <button onclick="withdrawFunds()">Withdraw Funds</button>
+            </div>
+            <div class="card">
+                <h3>Referral Bonus</h3>
+                <p id="referral">₦0.00</p>
+            </div>
+            <div class="card">
+                <h3>Activity Bonus</h3>
+                <p id="activity">₦0.00</p>
+            </div>
+        </section>
+
+        <div class="upgrade">
+            <button>Upgrade Account</button>
+        </div>
+
+        <div class="whatsapp">
+            <h3>Join Us on WhatsApp</h3>
+            <p>Get the latest updates and news instantly.</p>
+            <a href="#" class="whatsapp-btn">WhatsApp Channel</a>
+        </div>
+
+        <div class="earnings-test">
+            <button onclick="earnMoney(100)">Simulate Earnings (+₦100)</button>
+        </div>
+    </div>
 </body>
 </html>
