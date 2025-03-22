@@ -140,62 +140,58 @@
 
     <script>
         document.getElementById("signupForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            var username = document.getElementById("username").value.trim();
-            var phone = document.getElementById("phone").value.trim();
-            var email = document.getElementById("email").value.trim();
-            var country = document.getElementById("country").value.trim();
-            var packageType = document.getElementById("package").value.trim();
-            var password = document.getElementById("password").value.trim();
-            var couponCode = document.getElementById("coupon").value.trim();
+    var username = document.getElementById("username").value.trim();
+    var phone = document.getElementById("phone").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var country = document.getElementById("country").value.trim();
+    var packageType = document.getElementById("package").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var couponCode = document.getElementById("coupon").value.trim();
 
-            var errorMessage = document.getElementById("errorMessage");
-            var successMessage = document.getElementById("successMessage");
-            var errorText = document.getElementById("errorText");
+    var errorMessage = document.getElementById("errorMessage");
+    var successMessage = document.getElementById("successMessage");
+    var errorText = document.getElementById("errorText");
 
-            // Hide messages before validation
-            errorMessage.style.display = "none";
-            successMessage.style.display = "none";
+    // Hide messages before validation
+    errorMessage.style.display = "none";
+    successMessage.style.display = "none";
 
-            var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
+    var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
 
-            // Show errors only AFTER clicking sign up
-            if (!storedCoupons[couponCode]) {
-                errorText.innerText = "Error: Invalid coupon code. Please try again.";
-                errorMessage.style.display = "flex";
-                return;
-            }
+    // Validate Coupon Code
+    if (!storedCoupons[couponCode]) {
+        errorText.innerText = "Error: Invalid coupon code. Please try again.";
+        errorMessage.style.display = "flex";
+        return;
+    }
 
-            if (storedCoupons[couponCode].status === "Used") {
-                errorText.innerText = "Error: This coupon has already been used.";
-                errorMessage.style.display = "flex";
-                return;
-            }
+    if (storedCoupons[couponCode].status === "Used") {
+        errorText.innerText = "Error: This coupon has already been used.";
+        errorMessage.style.display = "flex";
+        return;
+    }
 
-            if (storedCoupons[couponCode].country !== country) {
-                errorText.innerText = "Error: This coupon is only valid for users in " + storedCoupons[couponCode].country + ".";
-                errorMessage.style.display = "flex";
-                return;
-            }
+    if (storedCoupons[couponCode].country !== country) {
+        errorText.innerText = "Error: This coupon is only valid for users in " + storedCoupons[couponCode].country + ".";
+        errorMessage.style.display = "flex";
+        return;
+    }
 
-            // Mark the coupon as used
-            storedCoupons[couponCode].status = "Used";
-            localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
+    // Mark the coupon as used
+    storedCoupons[couponCode].status = "Used";
+    localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
 
-            // Store user data
-            var users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
-            users.push({ username, email, password, phone, country, packageType });
-            localStorage.setItem("registeredUsers", JSON.stringify(users));
+    // Store user data
+    var users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+    users.push({ username, email, password, phone, country, packageType });
+    localStorage.setItem("registeredUsers", JSON.stringify(users));
 
-            // Show success message
-            successMessage.innerHTML = '<span class="checkmark">✔</span> Registration Successful! You can now log in.';
-            successMessage.style.display = "flex";
+    // Show success message
+    successMessage.innerHTML = '<span class="checkmark">✔</span> Registration Successful! You can now log in.';
+    successMessage.style.display = "flex";
 
-            // Redirect after 3 seconds
-            setTimeout(() => { window.location.href = "login.html"; }, 3000);
-        });
-    </script>
-
-</body>
-</html>
+    // Redirect after 3 seconds
+    setTimeout(() => { window.location.href = "login.html"; }, 3000);
+});
