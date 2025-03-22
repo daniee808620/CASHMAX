@@ -5,175 +5,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generate Coupons</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            background-color: white;
+            color: blue;
+            font-family: 'Arimo', sans-serif;
+            margin: 0;
+            padding: 0;
             text-align: center;
-            background: linear-gradient(to right, #004080, #0073e6);
-            color: white;
-            margin-top: 50px;
         }
-        h2 {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(0, 0, 255, 0.1);
+            border-radius: 10px;
         }
         input, select, button {
-            display: block;
-            margin: 10px auto;
-            padding: 12px;
-            width: 80%;
-            max-width: 300px;
-            border-radius: 8px;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid blue;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: blue;
+            color: white;
+            padding: 10px;
             border: none;
-            font-size: 16px;
-        }
-        select, input {
-            background: #ffffff;
-            color: #333;
-            border: 2px solid #0056b3;
-        }
-        button {
-            background-color: #ffcc00;
-            color: #004080;
-            font-weight: bold;
+            border-radius: 20px;
             cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover {
-            background-color: #ffaa00;
+            font-weight: bold;
         }
         table {
-            width: 90%;
-            margin: 20px auto;
+            width: 100%;
+            margin-top: 20px;
             border-collapse: collapse;
-            background: white;
-            color: black;
-            border-radius: 10px;
-            overflow: hidden;
+        }
+        table, th, td {
+            border: 1px solid blue;
         }
         th, td {
-            border: 1px solid #ccc;
             padding: 10px;
             text-align: center;
-        }
-        th {
-            background-color: #0056b3;
-            color: white;
-        }
-        .status-active {
-            color: green;
-            font-weight: bold;
-        }
-        .status-used {
-            color: red;
-            font-weight: bold;
         }
         .delete-btn {
             background-color: red;
             color: white;
             border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
+            padding: 5px;
             cursor: pointer;
-            transition: 0.3s;
-        }
-        .delete-btn:hover {
-            background-color: darkred;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
 
-    <h2>Generate Coupon Codes</h2>
+    <div class="container">
+        <h2>Generate Coupons</h2>
+        
+        <select id="country">
+            <option value="">Select Country</option>
+            <option value="Nigeria">Nigeria</option>
+            <option value="Ghana">Ghana</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Cameroon">Cameroon</option>
+        </select>
 
-    <input type="number" id="couponAmount" placeholder="Enter number of coupons" min="1">
-    
-    <select id="couponCountry">
-        <option value="Nigeria">Nigeria</option>
-        <option value="Cameroon">Cameroon</option>
-        <option value="Ghana">Ghana</option>
-        <option value="Kenya">Kenya</option>
-    </select>
+        <select id="package">
+            <option value="">Select Package</option>
+            <option value="Lite">Lite (₦750)</option>
+            <option value="Standard">Standard (₦1500)</option>
+            <option value="Premium">Premium (₦3000)</option>
+        </select>
 
-    <select id="couponPlan">
-        <option value="750">₦750 Plan</option>
-        <option value="1500">₦1500 Plan</option>
-        <option value="3000">₦3000 Plan</option>
-    </select>
-
-    <button onclick="generateCoupons()">Generate Coupons</button>
-
-    <h3>Generated Coupons:</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Coupon</th>
-                <th>Used By</th>
-                <th>Plan</th>
-                <th>Country</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="couponTable">
-        </tbody>
-    </table>
+        <input type="number" id="quantity" placeholder="Enter number of coupons" min="1">
+        <button class="btn" onclick="generateCoupons()">Generate Coupons</button>
+        
+        <h3>Coupon History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Used By</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Country</th>
+                    <th>Status</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="couponTableBody"></tbody>
+        </table>
+    </div>
 
     <script>
         function generateCoupons() {
-            var amount = parseInt(document.getElementById("couponAmount").value);
-            var country = document.getElementById("couponCountry").value;
-            var plan = document.getElementById("couponPlan").value;
-            var prefix = plan === "750" ? "75" : plan === "1500" ? "15" : "30";
+            var country = document.getElementById("country").value;
+            var packageType = document.getElementById("package").value;
+            var quantity = parseInt(document.getElementById("quantity").value);
 
-            if (!amount || amount < 1) {
-                alert("Please enter a valid number of coupons.");
+            if (!country) {
+                alert("Please select a country.");
+                return;
+            }
+            if (!packageType) {
+                alert("Please select a package.");
+                return;
+            }
+            if (!quantity || quantity < 1) {
+                alert("Enter a valid number of coupons.");
                 return;
             }
 
             var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
 
-            for (var i = 0; i < amount; i++) {
-                var uniquePart = Math.floor(100000000000 + Math.random() * 900000000000);
-                var newCoupon = prefix + uniquePart;
-                storedCoupons[newCoupon] = { 
-                    usedBy: "—", 
-                    plan: "₦" + plan, 
-                    country: country, 
-                    status: "Active" 
+            var newCoupons = [];
+            var currentDate = new Date().toLocaleDateString();
+            var currentTime = new Date().toLocaleTimeString();
+            var prefix = "";
+
+            if (packageType === "Lite") prefix = "75";
+            if (packageType === "Standard") prefix = "15";
+            if (packageType === "Premium") prefix = "30";
+
+            for (var i = 0; i < quantity; i++) {
+                var randomPart = Math.random().toString(36).substr(2, 12).toUpperCase();
+                var couponCode = prefix + randomPart.substring(0, 13); // Ensure total length is 15
+                
+                storedCoupons[couponCode] = {
+                    status: "Active",
+                    package: packageType,
+                    country: country,
+                    usedBy: "Not Used",
+                    date: currentDate,
+                    time: currentTime
                 };
+                newCoupons.push(couponCode);
             }
 
             localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
-            displayCoupons();
+
+            loadCouponHistory();
         }
 
-        function displayCoupons() {
+        function loadCouponHistory() {
             var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
-            var couponTable = document.getElementById("couponTable");
-            couponTable.innerHTML = "";
+            var tableBody = document.getElementById("couponTableBody");
+            tableBody.innerHTML = "";
 
-            for (var code in storedCoupons) {
-                couponTable.innerHTML += `
-                    <tr>
-                        <td>${code}</td>
-                        <td>${storedCoupons[code].usedBy}</td>
-                        <td>${storedCoupons[code].plan}</td>
-                        <td>${storedCoupons[code].country}</td>
-                        <td class="${storedCoupons[code].status === "Active" ? "status-active" : "status-used"}">
-                            ${storedCoupons[code].status}
-                        </td>
-                        <td><button class="delete-btn" onclick="deleteCoupon('${code}')">Delete</button></td>
-                    </tr>`;
-            }
+            Object.keys(storedCoupons).forEach(coupon => {
+                var row = `<tr>
+                    <td>${coupon}</td>
+                    <td>${storedCoupons[coupon].usedBy}</td>
+                    <td>${storedCoupons[coupon].date}</td>
+                    <td>${storedCoupons[coupon].time}</td>
+                    <td>${storedCoupons[coupon].country}</td>
+                    <td>${storedCoupons[coupon].status}</td>
+                    <td><button class="delete-btn" onclick="deleteCoupon('${coupon}')">Delete</button></td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
         }
 
-        function deleteCoupon(couponCode) {
+        function deleteCoupon(coupon) {
             var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
-            delete storedCoupons[couponCode];
+            delete storedCoupons[coupon];
             localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
-            displayCoupons();
+            loadCouponHistory();
         }
 
-        displayCoupons();
+        window.onload = loadCouponHistory;
     </script>
 
 </body>
