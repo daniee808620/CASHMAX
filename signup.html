@@ -190,10 +190,14 @@
             localStorage.setItem("validCoupons", JSON.stringify(storedCoupons));
 
             // Store user data
-            var users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
-            users.push({ username, email, password, phone, country, packageType });
-            localStorage.setItem("registeredUsers", JSON.stringify(users));
+var users = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+users.push({ username, email, password, phone, country, packageType });
+localStorage.setItem("registeredUsers", JSON.stringify(users));
 
+// Update total users count
+var totalUsers = parseInt(localStorage.getItem("totalUsers")) || 0;
+totalUsers++;
+localStorage.setItem("totalUsers", totalUsers);
             // Show success message
             successMessage.innerHTML = '<span class="checkmark">✔</span> Registration Successful! You can now log in.';
             successMessage.style.display = "flex";
