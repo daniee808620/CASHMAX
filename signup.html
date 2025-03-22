@@ -160,6 +160,7 @@
 
             var storedCoupons = JSON.parse(localStorage.getItem("validCoupons")) || {};
 
+            // Show errors only AFTER clicking sign up
             if (!storedCoupons[couponCode]) {
                 errorText.innerText = "Error: Invalid coupon code. Please try again.";
                 errorMessage.style.display = "flex";
