@@ -228,16 +228,252 @@
             alert("Referral link copied!");
         }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arimo, sans-serif;
+            background-color: #f4f6fb;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .welcome {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0033cc;
+            margin: 10px 0;
+        }
+
+        .balance-box {
+            background: #0033cc;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .earnings-amount {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .withdraw-btn {
+            background: white;
+            color: #0033cc;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .earnings-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .earnings-card {
+            flex: 1;
+            background: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 5px;
+        }
+
+        .earnings-title {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .earnings-amount-small {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0033cc;
+        }
+
+        .referral-box {
+            background: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+        }
+
+        .referral-link {
+            background: #f4f6fb;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .copy-btn {
+            background: #0033cc;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #0033cc;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background: #0033cc;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px solid white;
+        }
+
+        .menu a:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <div class="menu" id="menu">
+            <a href="daily-pay.html">Daily Pay</a>
+            <a href="sp-post.html">SP Post</a>
+            <a href="bills-payment.html">Bills Payment</a>
+            <a href="referrals.html">My Referrals</a>
+            <a href="loan.html">Loan</a>
+            <a href="spin-win.html">Spin and Win</a>
+            <a href="bank.html">Bank</a>
+            <a href="account-settings.html">Account Settings</a>
+        </div>
+
+        <img src="https://i.postimg.cc/VLWjC9SN/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250321-225402-0000.png" class="profile-img" alt="Profile">
+        
+        <div class="welcome">Welcome, <span id="username">User</span></div>
+
+        <div class="balance-box">
+            <p>Total Balance</p>
+            <p class="earnings-amount">₦<span id="totalBalance">0.00</span></p>
+            <button class="withdraw-btn" onclick="withdrawFunds()">Withdraw Funds</button>
+        </div>
+
+        <div class="earnings-container">
+            <div class="earnings-card">
+                <p class="earnings-title">Activity Earnings</p>
+                <p class="earnings-amount-small">₦<span id="activityEarnings">0.00</span></p>
+            </div>
+            <div class="earnings-card">
+                <p class="earnings-title">Referral Earnings</p>
+                <p class="earnings-amount-small">₦<span id="referralEarnings">0.00</span></p>
+            </div>
+            <div class="earnings-card">
+                <p class="earnings-title">Indirect Bonus</p>
+                <p class="earnings-amount-small">₦<span id="indirectBonus">0.00</span></p>
+            </div>
+        </div>
+
+        <div class="referral-box">
+            <p>Invite and earn exciting rewards</p>
+            <p>Refer a downline and earn ₦<span id="referralBonus">0</span> per referral.</p>
+            <div class="referral-link">
+                <span id="referralLink">https://yourlink.com/ref?user=123</span>
+                <button class="copy-btn" onclick="copyLink()">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        document.addEventListener("click", function(event) {
+            var menu = document.getElementById("menu");
+            if (event.target.closest(".hamburger") === null && event.target.closest(".menu") === null) {
+                menu.style.display = "none";
+            }
+        });
+
+        function copyLink() {
+            var link = document.getElementById("referralLink").innerText;
+            navigator.clipboard.writeText(link);
+            alert("Referral link copied!");
+        }
+
         function withdrawFunds() {
             alert("Withdrawal system coming soon!");
         }
 
-        // Update values from localStorage
+        // Function to get balance from localStorage safely
+        function getBalanceValue(key) {
+            let value = localStorage.getItem(key);
+            return value ? parseFloat(value).toFixed(2) : "0.00";
+        }
+
+        // Update values
         document.getElementById("username").innerText = localStorage.getItem("username") || "User";
-        document.getElementById("totalBalance").innerText = localStorage.getItem("totalBalance") || "0.00";
-        document.getElementById("activityEarnings").innerText = localStorage.getItem("activityEarnings") || "0.00";
-        document.getElementById("referralEarnings").innerText = localStorage.getItem("referralEarnings") || "0.00";
-        document.getElementById("indirectBonus").innerText = localStorage.getItem("indirectBonus") || "0.00";
+        document.getElementById("totalBalance").innerText = getBalanceValue("totalBalance");
+        document.getElementById("activityEarnings").innerText = getBalanceValue("activityEarnings");
+        document.getElementById("referralEarnings").innerText = getBalanceValue("referralEarnings");
+        document.getElementById("indirectBonus").innerText = getBalanceValue("indirectBonus");
     </script>
 
 </body>
