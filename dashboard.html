@@ -184,6 +184,21 @@
             <button class="withdraw-btn" onclick="withdrawFunds()">Withdraw Funds</button>
         </div>
 
+        <div class="earnings-container">
+            <div class="earnings-card">
+                <p class="earnings-title">Activity Earnings</p>
+                <p class="earnings-amount-small">₦<span id="activityEarnings">0.00</span></p>
+            </div>
+            <div class="earnings-card">
+                <p class="earnings-title">Referral Earnings</p>
+                <p class="earnings-amount-small">₦<span id="referralEarnings">0.00</span></p>
+            </div>
+            <div class="earnings-card">
+                <p class="earnings-title">Indirect Bonus</p>
+                <p class="earnings-amount-small">₦<span id="indirectBonus">0.00</span></p>
+            </div>
+        </div>
+
         <div class="referral-box">
             <p>Invite and earn exciting rewards</p>
             <p>Refer a downline and earn ₦<span id="referralBonus">0</span> per referral.</p>
@@ -217,17 +232,12 @@
             alert("Withdrawal system coming soon!");
         }
 
-        function loadBalances() {
-            document.getElementById("username").innerText = localStorage.getItem("username") || "User";
-            document.getElementById("totalBalance").innerText = localStorage.getItem("totalBalance") || "0.00";
-
-            // Set referral bonus based on user's plan
-            var userPlan = localStorage.getItem("userPlan") || "Lite";
-            var bonusAmount = userPlan === "Lite" ? 400 : userPlan === "Standard" ? 850 : 2000;
-            document.getElementById("referralBonus").innerText = bonusAmount;
-        }
-
-        loadBalances();
+        // Update values from localStorage
+        document.getElementById("username").innerText = localStorage.getItem("username") || "User";
+        document.getElementById("totalBalance").innerText = localStorage.getItem("totalBalance") || "0.00";
+        document.getElementById("activityEarnings").innerText = localStorage.getItem("activityEarnings") || "0.00";
+        document.getElementById("referralEarnings").innerText = localStorage.getItem("referralEarnings") || "0.00";
+        document.getElementById("indirectBonus").innerText = localStorage.getItem("indirectBonus") || "0.00";
     </script>
 
 </body>
