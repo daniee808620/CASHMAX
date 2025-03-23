@@ -232,8 +232,16 @@
             alert("Withdrawal system coming soon!");
         }
 
-        document.getElementById("username").innerText = localStorage.getItem("username") || "User";
-        document.getElementById("totalBalance").innerText = localStorage.getItem("totalBalance") || "0.00";
+        function loadBalances() {
+            document.getElementById("username").innerText = localStorage.getItem("username") || "User";
+            document.getElementById("totalBalance").innerText = localStorage.getItem("totalBalance") || "0.00";
+            document.getElementById("activityEarnings").innerText = localStorage.getItem("activityEarnings") || "0.00";
+            document.getElementById("referralEarnings").innerText = localStorage.getItem("referralEarnings") || "0.00";
+            document.getElementById("indirectBonus").innerText = localStorage.getItem("indirectBonus") || "0.00";
+            document.getElementById("referralBonus").innerText = localStorage.getItem("referralBonus") || "0";
+        }
+
+        loadBalances();
     </script>
 
 </body>
