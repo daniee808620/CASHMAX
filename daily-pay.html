@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Pay</title>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arimo, sans-serif;
+            background-color: #0033cc;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            color: black;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #0033cc;
+        }
+
+        .task-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f4f6fb;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .task-btn {
+            background: white;
+            border: 1px solid #0033cc;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #0033cc;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .claim-btn {
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        .success-message {
+            display: none;
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .balance-box {
+            background: #0033cc;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Perform Your Task to Earn More</h2>
+        <p><strong>Instructions:</strong> Make sure you perform the task before claiming your reward.</p>
+
+        <div class="balance-box">Your Balance: ₦<span id="userBalance">0</span></div>
+
+        <div id="successMessage" class="success-message">✓ Reward Claimed Successfully!</div>
+
+        <div id="taskList"></div>
+    </div>
+
+    <script>
+        // Get user balance from localStorage or set to 0
+        var userBalance = localStorage.getItem("userBalance") ? parseFloat(localStorage.getItem("userBalance")) : 0;
+        document.getElementById("userBalance").innerText = userBalance.toFixed(2);
+
+        // Get tasks from localStorage
+        var tasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
+        var claimedTasks = JSON.parse(localStorage.getItem("claimedTasks")) || [];
+
+        var taskList = document.getElementById("taskList");
+
+        function renderTasks() {
+            taskList.innerHTML = "";
+            if (tasks.length === 0) {
+                taskList.innerHTML = "<p>No tasks available.</p>";
+            } else {
+                tasks.forEach((task, index) => {
+                    if (!claimedTasks.includes(task.link)) { 
+                        var taskDiv = document.createElement("div");
+                        taskDiv.className = "task-container";
+                        taskDiv.innerHTML = `
+                            <a href="${task.link}" class="task-btn" target="_blank">Task</a>
+                            <button class="claim-btn" onclick="claimReward(${index})">Claim Reward</button>
+                        `;
+                        taskList.appendChild(taskDiv);
+                    }
+                });
+            }
+        }
+
+        function claimReward(index) {
+            var task = tasks[index];
+
+            if (!claimedTasks.includes(task.link)) {
+                userBalance += parseFloat(task.reward); 
+                localStorage.setItem("userBalance", userBalance.toFixed(2));
+                document.getElementById("userBalance").innerText = userBalance.toFixed(2);
+
+                claimedTasks.push(task.link);
+                localStorage.setItem("claimedTasks", JSON.stringify(claimedTasks));
+
+                renderTasks();
+                document.getElementById("successMessage").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("successMessage").style.display = "none";
+                }, 2000);
+            }
+        }
+
+        // Render tasks on page load
+        renderTasks();
+    </script>
+
+</body>
+</html>
