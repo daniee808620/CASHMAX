@@ -77,6 +77,19 @@
             margin-bottom: 10px;
             font-weight: bold;
         }
+        
+        .earnings-container {
+            background: #f4f6fb;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .earnings-title {
+            color: #0033cc;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -85,17 +98,22 @@
         <h2>Perform Your Task to Earn More</h2>
         <p><strong>Instructions:</strong> Make sure you perform the task before claiming your reward.</p>
 
-        <div class="balance-box">Your Balance: ₦<span id="userBalance">0</span></div>
+        <div class="balance-box">Your Balance: ₦<span id="activityEarnings">0</span></div>
 
         <div id="successMessage" class="success-message">✓ Reward Claimed Successfully!</div>
 
         <div id="taskList"></div>
+
+        <div class="earnings-container">
+            <p class="earnings-title">Activity Earnings: ₦<span id="activityEarningsDisplay">0</span></p>
+        </div>
     </div>
 
     <script>
-        // Get user balance from localStorage or set to 0
-        var userBalance = localStorage.getItem("userBalance") ? parseFloat(localStorage.getItem("userBalance")) : 0;
-        document.getElementById("userBalance").innerText = userBalance.toFixed(2);
+        // Get user activity earnings from localStorage
+        var activityEarnings = localStorage.getItem("activityEarnings") ? parseFloat(localStorage.getItem("activityEarnings")) : 0;
+        document.getElementById("activityEarnings").innerText = activityEarnings.toFixed(2);
+        document.getElementById("activityEarningsDisplay").innerText = activityEarnings.toFixed(2);
 
         // Get tasks from localStorage
         var tasks = JSON.parse(localStorage.getItem("dailyTasks")) || [];
@@ -126,9 +144,11 @@
             var task = tasks[index];
 
             if (!claimedTasks.includes(task.link)) {
-                userBalance += parseFloat(task.reward); 
-                localStorage.setItem("userBalance", userBalance.toFixed(2));
-                document.getElementById("userBalance").innerText = userBalance.toFixed(2);
+                activityEarnings += parseFloat(task.reward); 
+                localStorage.setItem("activityEarnings", activityEarnings.toFixed(2));
+
+                document.getElementById("activityEarnings").innerText = activityEarnings.toFixed(2);
+                document.getElementById("activityEarningsDisplay").innerText = activityEarnings.toFixed(2);
 
                 claimedTasks.push(task.link);
                 localStorage.setItem("claimedTasks", JSON.stringify(claimedTasks));
