@@ -6,15 +6,11 @@
     <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Arimo&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: Arimo, sans-serif;
             background-color: #f4f6fb;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -26,14 +22,15 @@
             max-width: 400px;
             background: white;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
+            position: relative;
         }
 
         .profile-img {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -42,7 +39,7 @@
             font-size: 18px;
             font-weight: bold;
             color: #0033cc;
-            margin: 15px 0;
+            margin: 10px 0;
         }
 
         .balance-box {
@@ -61,14 +58,13 @@
         .withdraw-btn {
             background: white;
             color: #0033cc;
-            padding: 8px 15px;
+            padding: 8px;
             text-decoration: none;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
-            border: 2px solid #0033cc;
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 8px;
             cursor: pointer;
         }
 
@@ -81,7 +77,7 @@
         .earnings-card {
             flex: 1;
             background: white;
-            padding: 12px;
+            padding: 15px;
             text-align: center;
             border-radius: 8px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
@@ -127,11 +123,58 @@
             border: none;
             cursor: pointer;
         }
+
+        /* Hamburger Menu */
+        .hamburger {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #0033cc;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background: #0033cc;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px solid white;
+        }
+
+        .menu a:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <div class="menu" id="menu">
+            <a href="daily-pay.html">Daily Pay</a>
+            <a href="sp-post.html">SP Post</a>
+            <a href="bills-payment.html">Bills Payment</a>
+            <a href="referrals.html">My Referrals</a>
+            <a href="loan.html">Loan</a>
+            <a href="spin-win.html">Spin and Win</a>
+            <a href="bank.html">Bank</a>
+            <a href="withdraw.html">Withdraw</a>
+            <a href="account-settings.html">Account Settings</a>
+        </div>
+
         <img src="https://i.postimg.cc/VLWjC9SN/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250321-225402-0000.png" class="profile-img" alt="Profile">
         
         <div class="welcome">Welcome, <span id="username">User</span></div>
@@ -168,6 +211,18 @@
     </div>
 
     <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        document.addEventListener("click", function(event) {
+            var menu = document.getElementById("menu");
+            if (event.target.closest(".hamburger") === null && event.target.closest(".menu") === null) {
+                menu.style.display = "none";
+            }
+        });
+
         function copyLink() {
             var link = document.getElementById("referralLink").innerText;
             navigator.clipboard.writeText(link);
@@ -180,23 +235,12 @@
             return isNaN(value) ? "0.00" : value.toFixed(2);
         }
 
-        function updateBalance(key, amount) {
-            let currentBalance = parseFloat(localStorage.getItem(key)) || 0;
-            let newBalance = currentBalance + amount;
-            localStorage.setItem(key, newBalance);
-            displayBalances();
-        }
-
-        function displayBalances() {
-            document.getElementById("username").innerText = localStorage.getItem("username") || "User";
-            document.getElementById("totalBalance").innerText = getBalanceValue("totalBalance");
-            document.getElementById("activityEarnings").innerText = getBalanceValue("activityEarnings");
-            document.getElementById("referralEarnings").innerText = getBalanceValue("referralEarnings");
-            document.getElementById("indirectBonus").innerText = getBalanceValue("indirectBonus");
-        }
-
-        displayBalances();
+        document.getElementById("username").innerText = localStorage.getItem("username") || "User";
+        document.getElementById("totalBalance").innerText = getBalanceValue("totalBalance");
+        document.getElementById("activityEarnings").innerText = getBalanceValue("activityEarnings");
+        document.getElementById("referralEarnings").innerText = getBalanceValue("referralEarnings");
+        document.getElementById("indirectBonus").innerText = getBalanceValue("indirectBonus");
     </script>
 
 </body>
-</html>
+        </html>
