@@ -132,6 +132,7 @@
             cursor: pointer;
             font-size: 20px;
             color: #0033cc;
+            z-index: 100;
         }
 
         .menu {
@@ -143,6 +144,7 @@
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
             padding: 10px;
             border-radius: 5px;
+            z-index: 99;
         }
 
         .menu a {
@@ -213,12 +215,13 @@
     <script>
         function toggleMenu() {
             var menu = document.getElementById("menu");
-            menu.style.display = menu.style.display === "block" ? "none" : "block";
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
         }
 
         document.addEventListener("click", function(event) {
             var menu = document.getElementById("menu");
-            if (event.target.closest(".hamburger") === null && event.target.closest(".menu") === null) {
+            var hamburger = document.querySelector(".hamburger");
+            if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
                 menu.style.display = "none";
             }
         });
@@ -230,13 +233,16 @@
         }
 
         function getBalanceValue(key) {
-    let value = localStorage.getItem(key);
-    value = parseFloat(value);
-    return isNaN(value) ? "0.00" : value.toFixed(2);
-}
+            let value = localStorage.getItem(key);
+            value = parseFloat(value);
+            return isNaN(value) ? "0.00" : value.toFixed(2);
+        }
 
-document.getElementById("username").innerText = localStorage.getItem("username") || "User";
-document.getElementById("totalBalance").innerText = getBalanceValue("totalBalance");
-document.getElementById("activityEarnings").innerText = getBalanceValue("activityEarnings");
-document.getElementById("referralEarnings").innerText = getBalanceValue("referralEarnings");
-document.getElementById("indirectBonus").innerText = getBalanceValue("indirectBonus");
+        document.getElementById("username").innerText = localStorage.getItem("username") || "User";
+        document.getElementById("totalBalance").innerText = getBalanceValue("totalBalance");
+        document.getElementById("activityEarnings").innerText = getBalanceValue("activityEarnings");
+        document.getElementById("referralEarnings").innerText = getBalanceValue("referralEarnings");
+        document.getElementById("indirectBonus").innerText = getBalanceValue("indirectBonus");
+    </script>
+</body>
+</html>
