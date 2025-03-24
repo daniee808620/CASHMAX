@@ -218,6 +218,14 @@
             menu.style.display = (menu.style.display === "block") ? "none" : "block";
         }
 
+        document.addEventListener("click", function(event) {
+            var menu = document.getElementById("menu");
+            var hamburger = document.querySelector(".hamburger");
+            if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+                menu.style.display = "none";
+            }
+        });
+
         function copyLink() {
             var link = document.getElementById("referralLink").innerText;
             navigator.clipboard.writeText(link);
@@ -226,6 +234,7 @@
 
         function getBalanceValue(key) {
             let value = localStorage.getItem(key);
+            console.log(`Fetching ${key}:`, value);
             return value && !isNaN(value) ? parseFloat(value).toFixed(2) : "0.00";
         }
 
