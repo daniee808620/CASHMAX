@@ -28,46 +28,6 @@
             position: relative;
         }
 
-        .profile-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .welcome {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0033cc;
-            margin: 10px 0;
-        }
-
-        .balance-box {
-            background: #0033cc;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .earnings-amount {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .withdraw-btn {
-            background: white;
-            color: #0033cc;
-            padding: 8px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 8px;
-            cursor: pointer;
-        }
-
         .earnings-container {
             display: flex;
             justify-content: space-between;
@@ -94,104 +54,14 @@
             font-weight: bold;
             color: #0033cc;
         }
-
-        .referral-box {
-            background: white;
-            padding: 15px;
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 15px;
-        }
-
-        .referral-link {
-            background: #f4f6fb;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .copy-btn {
-            background: #0033cc;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Hamburger Menu */
-        .hamburger {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            color: #0033cc;
-            z-index: 100;
-        }
-
-        .menu {
-            display: none;
-            position: absolute;
-            top: 40px;
-            left: 10px;
-            background: #0033cc;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            z-index: 99;
-        }
-
-        .menu a {
-            display: block;
-            padding: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            border-bottom: 1px solid white;
-        }
-
-        .menu a:last-child {
-            border-bottom: none;
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="hamburger" onclick="toggleMenu()">☰</div>
-        <div class="menu" id="menu">
-            <a href="daily-pay.html">Daily Pay</a>
-            <a href="sp-post.html">SP Post</a>
-            <a href="bills-payment.html">Bills Payment</a>
-            <a href="referrals.html">My Referrals</a>
-            <a href="loan.html">Loan</a>
-            <a href="spin-win.html">Spin and Win</a>
-            <a href="bank.html">Bank</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="account-settings.html">Account Settings</a>
-        </div>
-
-        <img src="https://i.postimg.cc/VLWjC9SN/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250321-225402-0000.png" class="profile-img" alt="Profile">
-        
-        <div class="welcome">Welcome, <span id="username">User</span></div>
-
-        <div class="balance-box">
-            <p>Total Balance</p>
-            <p class="earnings-amount">₦<span id="totalBalance">0.00</span></p>
-            <button class="withdraw-btn" onclick="location.href='withdraw.html'">Withdraw Funds</button>
-        </div>
+        <h2>Welcome, <span id="username">User</span></h2>
 
         <div class="earnings-container">
-            <div class="earnings-card">
-                <p class="earnings-title">Activity Earnings</p>
-                <p class="earnings-amount-small">₦<span id="activityEarnings">0.00</span></p>
-            </div>
             <div class="earnings-card">
                 <p class="earnings-title">Referral Earnings</p>
                 <p class="earnings-amount-small">₦<span id="referralEarnings">0.00</span></p>
@@ -201,48 +71,30 @@
                 <p class="earnings-amount-small">₦<span id="indirectBonus">0.00</span></p>
             </div>
         </div>
-
-        <div class="referral-box">
-            <p>Invite and earn exciting rewards</p>
-            <p>Refer a downline and earn ₦<span id="referralBonus">0</span> per referral.</p>
-            <div class="referral-link">
-                <span id="referralLink">https://yourlink.com/ref?user=123</span>
-                <button class="copy-btn" onclick="copyLink()">Copy</button>
-            </div>
-        </div>
     </div>
 
     <script>
-        function toggleMenu() {
-            var menu = document.getElementById("menu");
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
-        }
-
-        document.addEventListener("click", function(event) {
-            var menu = document.getElementById("menu");
-            var hamburger = document.querySelector(".hamburger");
-            if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
-                menu.style.display = "none";
-            }
-        });
-
-        function copyLink() {
-            var link = document.getElementById("referralLink").innerText;
-            navigator.clipboard.writeText(link);
-            alert("Referral link copied!");
-        }
-
         function getBalanceValue(key) {
             let value = localStorage.getItem(key);
-            console.log(`Fetching ${key}:`, value);
+            console.log(`Fetching ${key}:`, value); // Debugging log
             return value && !isNaN(value) ? parseFloat(value).toFixed(2) : "0.00";
         }
 
+        // Ensure values exist in localStorage
+        if (!localStorage.getItem("referralEarnings")) {
+            localStorage.setItem("referralEarnings", "0.00");
+        }
+
+        if (!localStorage.getItem("indirectBonus")) {
+            localStorage.setItem("indirectBonus", "0.00");
+        }
+
         document.getElementById("username").innerText = localStorage.getItem("username") || "User";
-        document.getElementById("totalBalance").innerText = getBalanceValue("totalBalance");
-        document.getElementById("activityEarnings").innerText = getBalanceValue("activityEarnings");
         document.getElementById("referralEarnings").innerText = getBalanceValue("referralEarnings");
         document.getElementById("indirectBonus").innerText = getBalanceValue("indirectBonus");
+
+        // Debugging: Show all localStorage values
+        console.log("Current localStorage:", localStorage);
     </script>
 </body>
 </html>
