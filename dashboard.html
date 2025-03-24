@@ -123,58 +123,9 @@
             border: none;
             cursor: pointer;
         }
-
-        /* Hamburger Menu */
-        .hamburger {
-            position: fixed; /* Stay in one place */
-            top: 15px;
-            left: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #0033cc;
-            z-index: 10; /* Above everything */
-        }
-
-        .menu {
-            display: none;
-            position: fixed; /* Ensure it stays in place */
-            top: 50px;
-            left: 15px;
-            background: #0033cc;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            z-index: 9; /* Keep it below the hamburger */
-        }
-
-        .menu a {
-            display: block;
-            padding: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            border-bottom: 1px solid white;
-        }
-
-        .menu a:last-child {
-            border-bottom: none;
-        }
     </style>
 </head>
 <body>
-
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-    <div class="menu" id="menu">
-        <a href="daily-pay.html">Daily Pay</a>
-        <a href="sp-post.html">SP Post</a>
-        <a href="bills-payment.html">Bills Payment</a>
-        <a href="referrals.html">My Referrals</a>
-        <a href="loan.html">Loan</a>
-        <a href="spin-win.html">Spin and Win</a>
-        <a href="bank.html">Bank</a>
-        <a href="withdraw.html">Withdraw</a>
-        <a href="account-settings.html">Account Settings</a>
-    </div>
 
     <div class="container">
         <img src="https://i.postimg.cc/VLWjC9SN/Copy-of-Copy-of-Copy-of-Black-and-Beige-Simple-How-to-Earn-Money-Online-Ins-20250321-225402-0000.png" class="profile-img" alt="Profile">
@@ -213,20 +164,6 @@
     </div>
 
     <script>
-        function toggleMenu() {
-            var menu = document.getElementById("menu");
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
-        }
-
-        document.addEventListener("click", function(event) {
-            var menu = document.getElementById("menu");
-            var hamburger = document.querySelector(".hamburger");
-
-            if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
-                menu.style.display = "none";
-            }
-        });
-
         function copyLink() {
             var link = document.getElementById("referralLink").innerText;
             navigator.clipboard.writeText(link);
@@ -235,15 +172,45 @@
 
         function getBalanceValue(key) {
             let value = localStorage.getItem(key);
-            return isNaN(value) ? "0.00" : parseFloat(value).toFixed(2);
+            value = parseFloat(value);
+            return isNaN(value) ? "0.00" : value.toFixed(2);
         }
 
-        document.getElementById("username").innerText = localStorage.getItem("username") || "User";
-        document.getElementById("totalBalance").innerText = getBalanceValue("totalBalance");
-        document.getElementById("activityEarnings").innerText = getBalanceValue("activityEarnings");
-        document.getElementById("referralEarnings").innerText = getBalanceValue("referralEarnings");
-        document.getElementById("indirectBonus").innerText = getBalanceValue("indirectBonus");
+        function updateBalance(key, amount) {
+            let currentBalance = parseFloat(localStorage.getItem(key)) || 0;
+            let newBalance = currentBalance + amount;
+            localStorage.setItem(key, newBalance);
+            displayBalances();
+        }
+
+        function displayBalances() {
+            document.getElementById("username").innerText = localStorage.getItem("username") || "User";
+            document.getElementById("totalBalance").innerText = getBalanceValue("totalBalance");
+            document.getElementById("activityEarnings").innerText = getBalanceValue("activityEarnings");
+            document.getElementById("referralEarnings").innerText = getBalanceValue("referralEarnings");
+            document.getElementById("indirectBonus").innerText = getBalanceValue("indirectBonus");
+        }
+
+        function earnMoney() {
+            updateBalance("totalBalance", 500);  // Add ₦500 to total balance
+            updateBalance("activityEarnings", 500);  // Add ₦500 to activity earnings
+        }
+
+        function withdrawMoney() {
+            let balance = parseFloat(localStorage.getItem("totalBalance")) || 0;
+            if (balance >= 200) {
+                updateBalance("totalBalance", -200);  // Deduct ₦200
+                alert("₦200 Withdrawn Successfully!");
+            } else {
+                alert("Insufficient Balance!");
+            }
+        }
+
+        displayBalances();
     </script>
+    
+    <button onclick="earnMoney()">Earn ₦500</button>
+    <button onclick="withdrawMoney()">Withdraw ₦200</button>
 
 </body>
 </html>
