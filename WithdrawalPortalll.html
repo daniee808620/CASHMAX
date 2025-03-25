@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Withdrawal Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Arimo&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arimo, sans-serif;
+            background-color: #0000FF;
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+            color: black;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            border: none;
+        }
+
+        button {
+            background: #0033cc;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+            color: black;
+        }
+
+        th {
+            background: #0033cc;
+            color: white;
+        }
+
+        .approve-btn {
+            background: green;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .reject-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .approved {
+            background: lightgreen !important;
+        }
+
+        .rejected {
+            background: lightcoral !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Admin Withdrawal Portal</h2>
+
+        <label for="portal">Select Withdrawal Portal:</label>
+        <select id="portal">
+            <option value="airtime_data">Airtime & Data</option>
+            <option value="affiliate">Affiliate</option>
+            <option value="non_affiliate">Non Affiliate</option>
+        </select>
+
+        <button onclick="openWithdrawal()">Open Withdrawal</button>
+        <button onclick="closeWithdrawal()">Close Withdrawal</button>
+
+        <h3>Withdrawal Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="withdrawalTable">
+                <!-- Withdrawal Requests Will Be Loaded Here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Sample Data (Replace with real backend data)
+        let withdrawals = [
+            { username: "JohnDoe", amount: "₦5,000", type: "Affiliate", time: "12:30 PM", date: "25-03-2025", status: "" },
+            { username: "JaneSmith", amount: "₦2,000", type: "Non Affiliate", time: "1:45 PM", date: "25-03-2025", status: "" }
+        ];
+
+        // Load from localStorage if available
+        if (localStorage.getItem("withdrawals")) {
+            withdrawals = JSON.parse(localStorage.getItem("withdrawals"));
+        }
+
+        function loadWithdrawals() {
+            const table = document.getElementById("withdrawalTable");
+            table.innerHTML = ""; // Clear previous data
+
+            withdrawals.forEach((withdrawal, index) => {
+                let row = `<tr class="${withdrawal.status}">
+                    <td>${withdrawal.username}</td>
+                    <td>${withdrawal.amount}</td>
+                    <td>${withdrawal.type}</td>
+                    <td>${withdrawal.time}</td>
+                    <td>${withdrawal.date}</td>
+                    <td>
+                        ${withdrawal.status === "approved" ? `<span style="color:green;font-weight:bold;">Approved</span>` :
+                          withdrawal.status === "rejected" ? `<span style="color:red;font-weight:bold;">Rejected</span>` :
+                          `<button class="approve-btn" onclick="approve(${index})">Approve</button>
+                           <button class="reject-btn" onclick="reject(${index})">Reject</button>`}
+                    </td>
+                </tr>`;
+                table.innerHTML += row;
+            });
+        }
+
+        function approve(index) {
+            withdrawals[index].status = "approved";
+            saveWithdrawals();
+            loadWithdrawals();
+        }
+
+        function reject(index) {
+            withdrawals[index].status = "rejected";
+            saveWithdrawals();
+            loadWithdrawals();
+        }
+
+        function saveWithdrawals() {
+            localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+        }
+
+        function openWithdrawal() {
+            let portal = document.getElementById("portal").value;
+            alert("Opening withdrawal for " + portal.replace("_", " "));
+        }
+
+        function closeWithdrawal() {
+            let portal = document.getElementById("portal").value;
+            alert("Closing withdrawal for " + portal.replace("_", " "));
+        }
+
+        // Load withdrawals when page loads
+        window.onload = loadWithdrawals;
+    </script>
+
+</body>
+</html>
